@@ -167,8 +167,8 @@ const Stats = () => {
     }
     const all = Array.from(agg.values());
     return {
-      hcpLow: all.filter(p => p.handicap != null && p.handicap <= 15).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5),
-      hcpHigh: all.filter(p => p.handicap != null && p.handicap > 15).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5),
+      hcpLow: all.filter(p => p.handicap != null && p.handicap <= 14.4).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5),
+      hcpHigh: all.filter(p => p.handicap != null && p.handicap > 14.4).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5),
       female: all.filter(p => p.gender === 'F').sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5),
       senior: all.filter(p => p.is_senior).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5),
     };

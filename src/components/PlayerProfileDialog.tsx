@@ -113,8 +113,8 @@ const PlayerProfileDialog = ({ playerId, open, onOpenChange }: PlayerProfileDial
       return idx === -1 ? null : { pos: idx + 1, total: ranking[idx].total, of: ranking.length };
     };
 
-    const hcpLow = buildRanking((p) => p.handicap != null && p.handicap <= 15.0);
-    const hcpHigh = buildRanking((p) => p.handicap != null && p.handicap > 15.0);
+    const hcpLow = buildRanking((p) => p.handicap != null && p.handicap <= 14.4);
+    const hcpHigh = buildRanking((p) => p.handicap != null && p.handicap > 14.4);
     const female = buildRanking((p) => p.gender === 'F');
     const senior = buildRanking((p) => p.is_senior);
 
@@ -202,10 +202,10 @@ const PlayerProfileDialog = ({ playerId, open, onOpenChange }: PlayerProfileDial
   // Categoría fijada por el HCP de la primera ronda jugada (consistente con Rankings).
   const hcp = positions?.categoryHcp ?? player.current_handicap;
   const mainCategory =
-    hcp != null && hcp <= 15.0
-      ? { key: 'hcpLow', label: 'HCP Bajo (≤15.0)', pos: positions?.hcpLow }
+    hcp != null && hcp <= 14.4.0
+      ? { key: 'hcpLow', label: 'HCP Bajo (≤14.4)', pos: positions?.hcpLow }
       : hcp != null
-      ? { key: 'hcpHigh', label: 'HCP Alto (>15.0)', pos: positions?.hcpHigh }
+      ? { key: 'hcpHigh', label: 'HCP Alto (≥14.5)', pos: positions?.hcpHigh }
       : null;
 
   const subCategories: { label: string; pos: { pos: number; total: number; of: number } | null | undefined }[] = [];

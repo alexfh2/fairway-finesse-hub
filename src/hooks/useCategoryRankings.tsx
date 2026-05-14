@@ -97,8 +97,8 @@ export function useCategoryRankings() {
     };
 
     return {
-      hcpInf: build(p => p.handicap != null && p.handicap <= 15.0),
-      hcpSup: build(p => p.handicap != null && p.handicap > 15.0),
+      hcpInf: build(p => p.handicap != null && p.handicap <= 14.4),
+      hcpSup: build(p => p.handicap != null && p.handicap > 14.4),
       female: build(p => p.gender === 'F'),
       senior: build(p => p.is_senior),
     };
