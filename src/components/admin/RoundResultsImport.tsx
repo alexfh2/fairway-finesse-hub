@@ -413,15 +413,20 @@ const RoundResultsImport = ({ round, onClose }: Props) => {
                 onChange={handleExcelUpload}
                 className="hidden"
               />
-              <Button
-                variant="outline"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={loading}
-                className="w-full"
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                {loading ? 'Leyendo Excel...' : 'Seleccionar archivo Excel'}
-              </Button>
+              <div className="flex flex-col w-full gap-1">
+                <Button
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={loading}
+                  className="w-full"
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  {loading ? 'Leyendo Excel...' : 'Seleccionar archivo Excel'}
+                </Button>
+                <p className="text-[10px] text-muted-foreground px-1">
+                  No se ha seleccionado ningún fichero
+                </p>
+              </div>
             </div>
           </div>
 
