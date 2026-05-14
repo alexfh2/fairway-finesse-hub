@@ -33,7 +33,7 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: corsHeaders });
     }
 
-    const { round_id, language } = await req.json();
+    const { round_id, language, weather_conditions } = await req.json();
 
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -140,6 +140,16 @@ ${seniors.length > 0 ? `CLASIFICACIÓN SENIOR (+65) — Ganador:\n1. ${seniors[0
 ${notablePerformances ? `ACTUACIONES DESTACADAS: ${notablePerformances}` : ""}
 
 Total participantes: ${results.length}
+${(() => {
+  const w = weather_conditions || {};
+  const lines: string[] = [];
+  if (w.friday) lines.push(`  · Viernes: ${w.friday}`);
+  if (w.saturday) lines.push(`  · Sábado: ${w.saturday}`);
+  if (w.sunday) lines.push(`  · Domingo: ${w.sunday}`);
+  if (w.green_speed) lines.push(`  · Velocidad de greens: ${w.green_speed}`);
+  if (w.wind) lines.push(`  · Viento: ${w.wind}`);
+  return lines.length ? `\nCONDICIONES METEOROLÓGICAS Y DEL CAMPO:\n${lines.join('\n')}` : '';
+})()}
 
 INSTRUCCIONES:
 - Escribe SIEMPRE en castellano
@@ -152,6 +162,7 @@ INSTRUCCIONES:
 - Modalidad STABLEFORD, NO menciones resultados scratch
 - Si es jornada MASTER, destácalo
 - Si hay patrocinador, menciónalo
+- Si se han facilitado condiciones meteorológicas o del campo y son relevantes (lluvia, viento fuerte, greens muy rápidos, calor extremo…), intégralas con naturalidad en una frase del resumen. Si son normales, omítelas.
 - Devuelve SOLO el texto del post, sin JSON ni markdown
 
 Devuelve el texto completo del post de Instagram.`;
