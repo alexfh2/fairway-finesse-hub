@@ -90,92 +90,91 @@ serve(async (req) => {
       });
     }
 
-    const langLabel = language === 'ca' ? 'català' : 'castellà';
-    const toneLabel = tone === 'press' 
-      ? 'nota de premsa esportiva, formal i professional' 
-      : 'engrescador per xarxes socials (WhatsApp/Instagram), amb emojis i to proper';
+    const toneLabel = tone === 'press'
+      ? 'nota de prensa deportiva, formal y profesional'
+      : 'cercano y atractivo para redes sociales (WhatsApp/Instagram), con emojis y tono próximo';
 
-    const prompt = `Genera una notícia esportiva de golf en ${langLabel} amb to de ${toneLabel}.
-IMPORTANT: La competició és en modalitat STABLEFORD. NO mencionis resultats scratch ni cops totals. Tots els resultats són en punts Stableford.
-El circuit és el "Gastronòmic Golf Experience" — un circuit de golf amb gastronomia i grans premis.
+    const prompt = `Genera una noticia deportiva de golf en castellano con tono de ${toneLabel}.
+IMPORTANTE: La competición es en modalidad STABLEFORD. NO menciones resultados scratch ni golpes totales. Todos los resultados son en puntos Stableford.
+El circuito es el "Circuito Albatros" — un circuito de golf con grandes premios.
 
-TEXT DE REFERÈNCIA D'ESTIL (adapta'l al golf i al Gastronòmic Golf Experience):
+TEXTO DE REFERENCIA DE ESTILO (adáptalo al golf y al Circuito Albatros):
 ---
-Després de [X] intenses jornades, la classificació s'està consolidant i ja es perfilen els jugadors que lluitaran pel podi aquesta temporada.
+Tras [X] intensas jornadas, la clasificación se está consolidando y ya se perfilan los jugadores que lucharán por el podio esta temporada.
 
-Hàndicap Baix: la batalla dels millors!
-La competició no pot estar més ajustada. [Descripció del líder i perseguidors]
+Handicap Bajo: ¡la batalla de los mejores!
+La competición no puede estar más ajustada. [Descripción del líder y perseguidores]
 
-1. [Nom] encapçala amb [X] pts, mostrant una regularitat impressionant.
-2. Molt a prop, [Nom] amb [X] pts.
-3. La tercera posició és per a [Nom] amb [X] pts.
+1. [Nombre] encabeza con [X] pts, mostrando una regularidad impresionante.
+2. Muy cerca, [Nombre] con [X] pts.
+3. La tercera posición es para [Nombre] con [X] pts.
 
 TOP 10:
-[Llistat]
+[Listado]
 
-Hàndicap Alt: els qui millor dominen el camp!
-[Mateixa estructura]
+Handicap Alto: ¡los que mejor dominan el campo!
+[Misma estructura]
 
-Classificació Femenina:
-[Mateixa estructura amb top 3]
+Clasificación Femenina:
+[Misma estructura con top 3]
 
-Classificació Sènior (+65):
-[Mateixa estructura amb top 3]
+Clasificación Senior (+65):
+[Misma estructura con top 3]
 
-[Si hi ha actuacions destacades: birdies, hole-in-ones, etc.]
+[Si hay actuaciones destacadas: birdies, hole-in-ones, etc.]
 
-Per a més detalls i classificacions actualitzades, visiteu la nostra web.
+Para más detalles y clasificaciones actualizadas, visite nuestra web.
 ---
 
-DADES DE LA JORNADA:
+DATOS DE LA JORNADA:
 - Jornada: ${round.name} (J${round.round_number})
 - Temporada: ${season?.year || 'N/A'}
 - Club: ${round.club || 'N/A'}
-- Camp: ${round.course || 'N/A'}
-- Data: ${round.date}
-- Patrocinador: ${sponsor || 'cap'}
-${round.is_master ? '- JORNADA MASTER (punts x1.25)' : ''}
-${special_mention ? `- Menció especial: ${special_mention}` : ''}
+- Campo: ${round.course || 'N/A'}
+- Fecha: ${round.date}
+- Patrocinador: ${sponsor || 'ninguno'}
+${round.is_master ? '- JORNADA MASTER (puntos x1.25)' : ''}
+${special_mention ? `- Mención especial: ${special_mention}` : ''}
 ${(() => {
   const w = weather_conditions || {};
   const lines: string[] = [];
-  if (w.friday) lines.push(`  · Divendres: ${w.friday}`);
-  if (w.saturday) lines.push(`  · Dissabte: ${w.saturday}`);
-  if (w.sunday) lines.push(`  · Diumenge: ${w.sunday}`);
-  if (w.green_speed) lines.push(`  · Velocitat dels greens: ${w.green_speed}`);
-  if (w.wind) lines.push(`  · Vent: ${w.wind}`);
-  return lines.length ? `- Condicions meteorològiques i del camp:\n${lines.join('\n')}` : '';
+  if (w.friday) lines.push(`  · Viernes: ${w.friday}`);
+  if (w.saturday) lines.push(`  · Sábado: ${w.saturday}`);
+  if (w.sunday) lines.push(`  · Domingo: ${w.sunday}`);
+  if (w.green_speed) lines.push(`  · Velocidad de los greens: ${w.green_speed}`);
+  if (w.wind) lines.push(`  · Viento: ${w.wind}`);
+  return lines.length ? `- Condiciones meteorológicas y del campo:\n${lines.join('\n')}` : '';
 })()}
 
-CLASSIFICACIÓ HANDICAP BAIX (≤15.0) — ${hcpLow.length} jugadors:
+CLASIFICACIÓN HANDICAP BAJO (≤15.0) — ${hcpLow.length} jugadores:
 ${hcpLow.slice(0, 3).map((r: any, i: number) => `${i + 1}. ${r.players?.name} — ${r.stableford_points} pts (Hcp ${r.handicap_at_round})`).join('\n')}
 
-CLASSIFICACIÓ HANDICAP ALT (15.1–36.0) — ${hcpHigh.length} jugadors:
+CLASIFICACIÓN HANDICAP ALTO (15.1–36.0) — ${hcpHigh.length} jugadores:
 ${hcpHigh.slice(0, 3).map((r: any, i: number) => `${i + 1}. ${r.players?.name} — ${r.stableford_points} pts (Hcp ${r.handicap_at_round})`).join('\n')}
 
-${females.length > 0 ? `CLASSIFICACIÓ FEMENINA — ${females.length} jugadores:\n1. ${females[0].players?.name} — ${females[0].stableford_points} pts (Hcp ${females[0].handicap_at_round})` : ''}
-${seniors.length > 0 ? `CLASSIFICACIÓ SÈNIOR (+65) — ${seniors.length} jugadors:\n1. ${seniors[0].players?.name} — ${seniors[0].stableford_points} pts (Hcp ${seniors[0].handicap_at_round})` : ''}
-${notablePerformances ? `ACTUACIONS DESTACADES: ${notablePerformances}` : ''}
+${females.length > 0 ? `CLASIFICACIÓN FEMENINA — ${females.length} jugadoras:\n1. ${females[0].players?.name} — ${females[0].stableford_points} pts (Hcp ${females[0].handicap_at_round})` : ''}
+${seniors.length > 0 ? `CLASIFICACIÓN SENIOR (+65) — ${seniors.length} jugadores:\n1. ${seniors[0].players?.name} — ${seniors[0].stableford_points} pts (Hcp ${seniors[0].handicap_at_round})` : ''}
+${notablePerformances ? `ACTUACIONES DESTACADAS: ${notablePerformances}` : ''}
 
-Total participants: ${results.length}
+Total participantes: ${results.length}
 
-INSTRUCCIONS:
-- ABSOLUTAMENT CAP EMOJI. Ni un sol emoji en tot el text. Això és una nota de premsa professional per enviar a diaris i mitjans de comunicació.
-- To formal, sobri i periodístic. Sense exclamacions excessives.
-- Segueix l'estructura: introducció, després cada categoria amb descripció + top 3 (Hcp Baix i Alt) o guanyador/a (Femenina i Sènior)
-- Per a Hàndicap Baix i Hàndicap Alt: inclou els 3 primers classificats amb comentaris personalitzats
-- Per a Femenina i Sènior: menciona NOMÉS el/la guanyador/a
-- OBLIGATORI: inclou SEMPRE les 4 categories si hi ha dades: Hàndicap Baix, Hàndicap Alt, Femenina i Sènior
-- Separa cada secció/categoria amb una línia en blanc per facilitar la lectura
-- NO mencionIs resultats scratch ni cops totals
-- Si s'han proporcionat condicions meteorològiques, velocitat de greens o vent, integra-les amb naturalitat a la narració quan siguin rellevants (especialment si han estat dures: pluja, vent fort, greens molt ràpids, calor, etc.). Si són condicions normals, pots ometre-les o mencionar-les breument. No facis una secció separada de meteorologia.
-- Genera un títol atractiu
-- Un subtítol complementari
-- Un cos complet amb la narració per categories
-- 3-5 highlights (frases curtes de destacats)
-- Un extracte SEO de màxim 160 caràcters
+INSTRUCCIONES:
+- ABSOLUTAMENTE NINGÚN EMOJI. Ni un solo emoji en todo el texto. Es una nota de prensa profesional para enviar a diarios y medios de comunicación.
+- Tono formal, sobrio y periodístico. Sin exclamaciones excesivas.
+- Sigue la estructura: introducción, después cada categoría con descripción + top 3 (Hcp Bajo y Alto) o ganador/a (Femenina y Senior)
+- Para Handicap Bajo y Handicap Alto: incluye los 3 primeros clasificados con comentarios personalizados
+- Para Femenina y Senior: menciona SOLO al ganador/a
+- OBLIGATORIO: incluye SIEMPRE las 4 categorías si hay datos: Handicap Bajo, Handicap Alto, Femenina y Senior
+- Separa cada sección/categoría con una línea en blanco para facilitar la lectura
+- NO menciones resultados scratch ni golpes totales
+- Si se han facilitado condiciones meteorológicas, velocidad de greens o viento, intégralas con naturalidad en la narración cuando sean relevantes (especialmente si han sido duras: lluvia, viento fuerte, greens muy rápidos, calor, etc.). Si son condiciones normales, puedes omitirlas o mencionarlas brevemente. No hagas una sección separada de meteorología.
+- Genera un título atractivo
+- Un subtítulo complementario
+- Un cuerpo completo con la narración por categorías
+- 3-5 highlights (frases cortas de destacados)
+- Un extracto SEO de máximo 160 caracteres
 
-Retorna EXCLUSIVAMENT un JSON vàlid amb aquest format:
+Devuelve EXCLUSIVAMENTE un JSON válido con este formato:
 {
   "title": "...",
   "subtitle": "...",
@@ -196,7 +195,7 @@ Retorna EXCLUSIVAMENT un JSON vàlid amb aquest format:
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: "Ets un redactor esportiu especialitzat en golf. Respon SEMPRE amb JSON vàlid, sense markdown." },
+          { role: "system", content: "Eres un redactor deportivo especializado en golf. Responde SIEMPRE en castellano y con JSON válido, sin markdown." },
           { role: "user", content: prompt },
         ],
       }),
