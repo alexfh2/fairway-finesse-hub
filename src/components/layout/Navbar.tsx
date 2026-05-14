@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
-import logo from '@/assets/logo.png';
 
 const navItems = [
   { key: 'overview', path: '/' },
@@ -37,9 +36,10 @@ const Navbar = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5">
           <img
-            src={logo}
-            alt="Gastronòmic Golf"
-            className="h-10 w-auto opacity-90 dark:brightness-0 dark:invert"
+            src="/logo-albatros.png"
+            alt="Circuito Albatros"
+            className="h-10 w-auto opacity-95"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
           />
         </Link>
 
@@ -84,7 +84,12 @@ const Navbar = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-72 bg-background border-border">
               <SheetTitle className="flex items-center gap-2">
-                <img src={logo} alt="Gastronòmic Golf" className="h-8 w-auto" />
+                <img
+                  src="/logo-albatros.png"
+                  alt="Circuito Albatros"
+                  className="h-8 w-auto"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                />
               </SheetTitle>
               <nav className="mt-8 flex flex-col gap-0.5">
                 {navItems.map((item) => {

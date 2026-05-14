@@ -38,7 +38,7 @@ const AdminLogin = () => {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md border-border/60">
         <CardHeader className="text-center">
-          <CardTitle className="font-display text-2xl">Gastronomic Golf</CardTitle>
+          <CardTitle className="font-display text-2xl">Circuito Albatros</CardTitle>
           <CardDescription>Accés al panell d'administració</CardDescription>
         </CardHeader>
         <CardContent>
@@ -48,7 +48,7 @@ const AdminLogin = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@gastronomicgolf.com"
+                placeholder="admin@circuitoalbatros.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
