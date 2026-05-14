@@ -1,6 +1,4 @@
 import heroBg from '@/assets/hero-editorial.png';
-import sponsorsLine from '@/assets/sponsors/sponsors-line.png';
-import sponsorsLineLight from '@/assets/sponsors/sponsors-line-light.png';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -105,35 +103,6 @@ const Index = () => {
           <p className="font-body text-sm text-muted-foreground/80 tracking-wide">
             Clasificación y seguimiento del circuito
           </p>
-        </div>
-
-        {/* ——— SPONSORS overlay (positioned over the lower part of the hero) ——— */}
-        <div className="absolute inset-x-0 bottom-0 z-10">
-          {/* translucent panel that blends with the image */}
-          <div className="bg-gradient-to-t from-background/85 via-background/55 to-transparent backdrop-blur-[2px] pt-10 pb-5">
-            <div className="container">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-px flex-1 bg-border/30" />
-                <h2 className="font-body text-[10px] font-medium tracking-[0.3em] uppercase text-muted-foreground/70">
-                  Patrocinadors
-                </h2>
-                <div className="h-px flex-1 bg-border/30" />
-              </div>
-              <img
-                src={sponsorsLineLight}
-                alt="Patrocinadors: Escampa Hotels, bonÀrea, Santi Pàmies Joiers, Grup Optimotor, Pruna Car Go - Omoda Jaecoo, Tancat de Codorniu, Garmin"
-                loading="lazy"
-                className="block dark:hidden mx-auto w-[85%] sm:w-[75%] h-auto object-contain opacity-65 hover:opacity-95 transition-opacity duration-500"
-              />
-              <img
-                src={sponsorsLine}
-                alt=""
-                aria-hidden="true"
-                loading="lazy"
-                className="hidden dark:block mx-auto w-[85%] sm:w-[75%] h-auto object-contain opacity-65 hover:opacity-95 transition-opacity duration-500"
-              />
-            </div>
-          </div>
         </div>
       </section>
 
