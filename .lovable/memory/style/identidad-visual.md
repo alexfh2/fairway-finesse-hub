@@ -1,13 +1,13 @@
 ---
-name: Visual Identity — Editorial Noir
-description: Dark atmospheric palette, Cormorant Garamond serif headings, DM Sans body, brass/champagne accents
+name: Visual Identity — Circuito Albatros
+description: Navy noche + dorado palette, Cormorant Garamond headings, DM Sans body, premium editorial sport
 type: design
 ---
-- Palette: charcoal black bg (220 14% 8%), warm ivory text (40 18% 85%), deep forest green primary (158 32% 14%), brass/champagne accent (40 42% 55%)
-- Display font: Cormorant Garamond (serif, editorial feel)
-- Body font: DM Sans (clean modern sans)
-- Direction: quiet luxury, editorial sport, private-club premium
-- Navbar: transparent over hero on homepage, dark sticky on inner pages
-- Avoid: bright white, generic SaaS cards, corporate styling
-- Bilingual: CAT default, ES toggle
+- Brand name: Circuito Albatros
+- Logo: /public/logo-albatros.png (cream/gold wordmark on navy)
+- Palette: navy noche bg #14213D (222 51% 11%), warm cream text #F4F1EA (42 29% 94%), gold accent #D6B675 (38 50% 65%), bluish-gray muted
+- Display font: Cormorant Garamond
+- Body font: DM Sans
+- Direction: premium minimalist, editorial sport, sober and exclusive
+- Bilingual: CAT default, ES toggle (no new languages)
 - No emojis
