@@ -1,12 +1,30 @@
-import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Trophy, Calendar, Users, FileText, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Trophy, Calendar, Users, FileText, ArrowRight, AlertTriangle, RotateCcw } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { ReauthConfirmDialog } from '@/components/admin/ReauthConfirmDialog';
+import { useToast } from '@/hooks/use-toast';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const [resetWarnOpen, setResetWarnOpen] = useState(false);
+  const [resetReauthOpen, setResetReauthOpen] = useState(false);
 
   const { data: seasonCount } = useQuery({
     queryKey: ['admin-seasons-count'],
@@ -49,6 +67,23 @@ const AdminDashboard = () => {
     { label: 'Noticias', value: newsStats?.total ?? 0, icon: FileText, path: '/admin/noticies', extra: newsStats },
   ];
 
+  const performReset = async () => {
+    // Wipe all demo data. Keep seasons, user_roles and admin users intact.
+    const tables = ['results', 'import_logs', 'photos', 'news_drafts', 'rounds', 'players'] as const;
+    for (const table of tables) {
+      const { error } = await supabase
+        .from(table)
+        .delete()
+        .gte('created_at', '1900-01-01');
+      if (error) throw new Error(`No se pudo limpiar ${table}: ${error.message}`);
+    }
+    await queryClient.invalidateQueries();
+    toast({
+      title: 'Base de datos reiniciada',
+      description: 'Se han eliminado jornadas, jugadores, resultados, fotos y noticias.',
+    });
+  };
+
   return (
     <div className="animate-fade-in">
       <h1 className="font-display text-2xl font-bold mb-6">Dashboard</h1>
@@ -85,6 +120,68 @@ const AdminDashboard = () => {
           </Card>
         ))}
       </div>
+
+      <div className="mt-10 border border-destructive/30 bg-destructive/5 rounded-lg p-5">
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded-md bg-destructive/15 text-destructive">
+            <AlertTriangle className="h-5 w-5" />
+          </div>
+          <div className="flex-1">
+            <h2 className="font-display text-lg font-semibold text-destructive">
+              Resetear base de datos (modo demo)
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
+              Elimina todas las jornadas, resultados, jugadores, fotos y noticias para empezar
+              una demo desde cero. Las temporadas y los usuarios administradores se mantienen.
+              Esta acción no se puede deshacer y requiere confirmar tu usuario y contraseña.
+            </p>
+            <Button
+              variant="destructive"
+              className="mt-4"
+              onClick={() => setResetWarnOpen(true)}
+            >
+              <RotateCcw className="h-4 w-4 mr-2" />
+              Resetear base de datos
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <AlertDialog open={resetWarnOpen} onOpenChange={setResetWarnOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Resetear toda la base de datos?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Se eliminarán <strong>todas las jornadas, resultados, jugadores, fotos y
+              noticias</strong>. Las temporadas y los administradores se conservarán.
+              <br /><br />
+              Por seguridad, deberás confirmar tu usuario y contraseña en el siguiente paso.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setResetWarnOpen(false);
+                setResetReauthOpen(true);
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Continuar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <ReauthConfirmDialog
+        open={resetReauthOpen}
+        onOpenChange={setResetReauthOpen}
+        title="Resetear base de datos"
+        description="Confirma tu usuario y contraseña para borrar todos los datos de la demo."
+        confirmLabel="Resetear definitivamente"
+        destructive
+        onConfirmed={performReset}
+      />
     </div>
   );
 };

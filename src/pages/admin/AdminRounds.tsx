@@ -28,6 +28,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import RoundResultsImport from '@/components/admin/RoundResultsImport';
+import { ReauthConfirmDialog } from '@/components/admin/ReauthConfirmDialog';
 import NewsGenerationDialog from '@/components/admin/NewsGenerationDialog';
 import type { Tables, TablesInsert } from '@/integrations/supabase/types';
 import type { Database } from '@/integrations/supabase/types';
@@ -78,6 +79,7 @@ const AdminRounds = () => {
   const [editingRound, setEditingRound] = useState<Round | null>(null);
   const [resultsRound, setResultsRound] = useState<Round | null>(null);
   const [deletingRound, setDeletingRound] = useState<Round | null>(null);
+  const [deletingRoundReauth, setDeletingRoundReauth] = useState<Round | null>(null);
   const [newsRound, setNewsRound] = useState<Round | null>(null);
   const [courseUrl, setCourseUrl] = useState('');
   const [extractingPar, setExtractingPar] = useState(false);
@@ -1054,19 +1056,41 @@ const AdminRounds = () => {
             <AlertDialogTitle>¿Eliminar {deletingRound?.name}?</AlertDialogTitle>
             <AlertDialogDescription>
               Se eliminarán todos los resultados, fotos y datos asociados a esta jornada. Esta acción no se puede deshacer.
+              <br /><br />
+              Por seguridad, deberás confirmar tu usuario y contraseña en el siguiente paso.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => deletingRound && deleteMutation.mutate(deletingRound.id)}
+              onClick={() => {
+                if (deletingRound) {
+                  setDeletingRoundReauth(deletingRound);
+                  setDeletingRound(null);
+                }
+              }}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {deleteMutation.isPending ? 'Eliminando...' : 'Eliminar'}
+              Continuar
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <ReauthConfirmDialog
+        open={!!deletingRoundReauth}
+        onOpenChange={(o) => !o && setDeletingRoundReauth(null)}
+        title={`Eliminar ${deletingRoundReauth?.name ?? ''}`}
+        description="Confirma tu usuario y contraseña para eliminar la jornada y todos sus datos."
+        confirmLabel="Eliminar definitivamente"
+        destructive
+        onConfirmed={async () => {
+          if (deletingRoundReauth) {
+            await deleteMutation.mutateAsync(deletingRoundReauth.id);
+            setDeletingRoundReauth(null);
+          }
+        }}
+      />
     </div>
   );
 };
