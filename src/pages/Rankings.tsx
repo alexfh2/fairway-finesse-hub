@@ -4,25 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Badge } from '@/components/ui/badge';
 import PlayerProfileDialog from '@/components/PlayerProfileDialog';
-import { fetchPublicCircuitData, publicCircuitDataQueryKey, type PublicResult } from '@/lib/publicCircuitData';
-import { buildPlayerCategoryHandicapMap, buildPlayerLastHandicapMap } from '@/lib/playerCategoryHandicap';
+import { fetchPublicCircuitData, publicCircuitDataQueryKey } from '@/lib/publicCircuitData';
+import { computeSeasonRankings, BEST_N_ROUNDS, BONUS_PER_ROUND } from '@/lib/seasonRankings';
 import { Trophy, ChevronRight, Users, ChevronDown, User } from 'lucide-react';
-
-type Result = PublicResult;
-
-function computeScratchStableford(scorecard: any, coursePar: any): number | null {
-  if (!scorecard?.scores || !coursePar) return null;
-  const scores: (number | null)[] = scorecard.scores;
-  const pars: number[] = coursePar;
-  if (scores.length !== pars.length) return null;
-  let total = 0;
-  for (let i = 0; i < scores.length; i++) {
-    const s = scores[i];
-    if (s == null || s === 0) continue;
-    total += Math.max(0, 2 - (s - pars[i]));
-  }
-  return total;
-}
 
 const Rankings = () => {
   const { t } = useTranslation();
@@ -33,7 +17,7 @@ const Rankings = () => {
   const { data: results, isLoading } = useQuery({
     queryKey: publicCircuitDataQueryKey,
     queryFn: fetchPublicCircuitData,
-    select: (data) => data.results as Result[],
+    select: (data) => data.results,
   });
 
   const { data: rounds } = useQuery({
@@ -48,159 +32,30 @@ const Rankings = () => {
     },
   });
 
-  const { data: season } = useQuery({
-    queryKey: ['public-season'],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('seasons')
-        .select('rules_config')
-        .eq('active', true)
-        .single();
-      return data;
-    },
-  });
+  const publishedRoundIds = useMemo(
+    () => new Set((rounds || []).map((r) => r.id)),
+    [rounds],
+  );
 
-  const bestN = (season?.rules_config as any)?.best_n_scores || 8;
+  const seasonRankings = useMemo(
+    () => computeSeasonRankings(results || [], publishedRoundIds),
+    [results, publishedRoundIds],
+  );
 
-  const rankings = useMemo(() => {
-    if (!results?.length || !rounds?.length) return {};
-
-    const roundMap = new Map(rounds.map(r => [r.id, r]));
-    const categoryHcpMap = buildPlayerCategoryHandicapMap(results as any);
-    const lastHcpMap = buildPlayerLastHandicapMap(results as any);
-
-    const byPlayer = new Map<string, {
-      name: string;
-      gender: string | null;
-      is_senior: boolean;
-      handicap: number | null; // categoría (fijo)
-      displayHandicap: number | null; // último jugado
-      scores: { points: number; roundId: string; roundNumber: number; roundName: string; isMaster: boolean; coef: number }[];
-    }>();
-
-    for (const r of results) {
-      if (!r.players_public || r.stableford_points == null) continue;
-      const pid = r.player_id;
-      if (!byPlayer.has(pid)) {
-        byPlayer.set(pid, {
-          name: r.players_public.name,
-          gender: r.players_public.gender,
-          is_senior: r.players_public.is_senior,
-          handicap: categoryHcpMap.get(pid) ?? r.players_public.current_handicap ?? r.handicap_at_round,
-          displayHandicap: lastHcpMap.get(pid) ?? r.players_public.current_handicap ?? r.handicap_at_round,
-          scores: [],
-        });
-      }
-      const round = roundMap.get(r.round_id);
-      byPlayer.get(pid)!.scores.push({
-        points: r.stableford_points,
-        roundId: r.round_id,
-        roundNumber: round?.round_number || r.rounds?.round_number || 0,
-        roundName: r.rounds?.name || '',
-        isMaster: r.rounds?.is_master || false,
-        coef: r.rounds?.master_coefficient || 1,
-      });
-    }
-
-    const buildRanking = (
-      filterFn: (p: { gender: string | null; is_senior: boolean; handicap: number | null }) => boolean,
-    ) => {
-      const filtered = Array.from(byPlayer.entries()).filter(([, p]) => filterFn(p));
-
-      return filtered.map(([id, p]) => {
-        const roundScores = new Map<string, { points: number; weighted: number }>();
-        for (const s of p.scores) {
-          const weighted = Math.round(s.points * (s.isMaster ? s.coef : 1));
-          roundScores.set(s.roundId, { points: s.points, weighted });
-        }
-
-        const allWeighted = p.scores.map(s => ({
-          ...s,
-          weighted: Math.round(s.points * (s.isMaster ? s.coef : 1)),
-        }));
-        allWeighted.sort((a, b) => b.weighted - a.weighted);
-        const bestScores = allWeighted.slice(0, bestN);
-        const total = bestScores.reduce((sum, s) => sum + s.weighted, 0);
-
-        return {
-          id,
-          name: p.name,
-          gender: p.gender,
-          is_senior: p.is_senior,
-          handicap: p.handicap,
-          displayHandicap: p.displayHandicap,
-          total,
-          roundsPlayed: p.scores.length,
-          roundScores,
-        };
-      });
-    };
-
-    const hcpLow = buildRanking(p => p.handicap != null && p.handicap <= 14.4);
-    hcpLow.sort((a, b) => b.total - a.total);
-
-    const hcpHigh = buildRanking(p => p.handicap != null && p.handicap > 14.4);
-    hcpHigh.sort((a, b) => b.total - a.total);
-
-    const female = buildRanking(p => p.gender === 'F');
-    female.sort((a, b) => b.total - a.total);
-
-    const senior = buildRanking(p => p.is_senior);
-    senior.sort((a, b) => b.total - a.total);
-
-    const scratchByPlayer = new Map<string, {
-      name: string;
-      handicap: number | null;
-      displayHandicap: number | null;
-      scratchScores: { points: number; roundId: string }[];
-    }>();
-
-    for (const r of results) {
-      if (!r.players_public) continue;
-      const pid = r.player_id;
-      let scratchPts = computeScratchStableford(r.scorecard, r.rounds?.course_par);
-      if (scratchPts == null && r.scratch_score != null && r.scratch_score <= 50) {
-        scratchPts = r.scratch_score;
-      }
-      if (scratchPts == null) continue;
-      if (!scratchByPlayer.has(pid)) {
-        scratchByPlayer.set(pid, {
-          name: r.players_public.name,
-          handicap: r.players_public.current_handicap ?? r.handicap_at_round,
-          displayHandicap: lastHcpMap.get(pid) ?? r.players_public.current_handicap ?? r.handicap_at_round,
-          scratchScores: [],
-        });
-      }
-      scratchByPlayer.get(pid)!.scratchScores.push({ points: scratchPts, roundId: r.round_id });
-    }
-
-    const scratch = Array.from(scratchByPlayer.entries()).map(([id, p]) => {
-      const roundScores = new Map<string, { points: number; weighted: number }>();
-      for (const s of p.scratchScores) {
-        roundScores.set(s.roundId, { points: s.points, weighted: s.points });
-      }
-      const sorted = [...p.scratchScores].sort((a, b) => b.points - a.points).slice(0, bestN);
-      const total = sorted.reduce((sum, s) => sum + s.points, 0);
-      return {
-        id,
-        name: p.name,
-        gender: null,
-        is_senior: false,
-        handicap: p.handicap,
-        displayHandicap: p.displayHandicap,
-        total,
-        roundsPlayed: p.scratchScores.length,
-        roundScores,
-      };
-    });
-    scratch.sort((a, b) => b.total - a.total);
-
-    return { hcpLow, hcpHigh, female, senior, scratch };
-  }, [results, rounds, bestN]);
+  const rankings = useMemo(
+    () => ({
+      hcpLow: seasonRankings.hcpInf,
+      hcpHigh: seasonRankings.hcpSup,
+      female: seasonRankings.female,
+      scratch: seasonRankings.scratch,
+    }),
+    [seasonRankings],
+  );
 
   const categories = [
-    { key: 'hcpLow', label: 'HCP Bajo (≤14.4)' },
-    { key: 'hcpHigh', label: 'HCP Alto (≥14.5)' },
+    { key: 'hcpLow', label: '1ª Categoría (≤14.4)' },
+    { key: 'hcpHigh', label: '2ª Categoría (≥14.5)' },
+    { key: 'female', label: 'Damas' },
     { key: 'scratch', label: 'Scratch' },
   ];
 
