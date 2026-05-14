@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { fetchPublicCircuitData, publicCircuitDataQueryKey } from '@/lib/publicCircuitData';
 import { buildPlayerCategoryHandicapMap } from '@/lib/playerCategoryHandicap';
 import { computeScratchStableford } from '@/lib/scratchStableford';
+import { computeSeasonRankings } from '@/lib/seasonRankings';
 
 type LeaderboardEntry = { name: string; value: number; detail?: string; playerId?: string };
 type HoleAggregate = { totalOverPar: number; count: number; parCounts: Record<string, number>; hcpCounts: Record<string, number> };
@@ -153,24 +154,21 @@ const Stats = () => {
   });
 
   const categoryLeaders = useMemo(() => {
-    if (!categoryData?.length) return { hcpLow: [], hcpHigh: [], female: [], senior: [] };
-    const categoryHcpMap = buildPlayerCategoryHandicapMap(categoryData as any);
-    const agg = new Map<string, { name: string; totalPoints: number; rounds: number; gender: string | null; is_senior: boolean; handicap: number | null; playerId: string }>();
-    for (const r of categoryData) {
-      const p = r.players_public as any;
-      if (!p) continue;
-      const hcp = categoryHcpMap.get(r.player_id) ?? r.handicap_at_round ?? p.current_handicap;
-      const pts = r.stableford_points ?? 0;
-      const existing = agg.get(r.player_id);
-      if (existing) { existing.totalPoints += pts; existing.rounds += 1; }
-      else { agg.set(r.player_id, { name: p.name, totalPoints: pts, rounds: 1, gender: p.gender, is_senior: p.is_senior, handicap: hcp, playerId: r.player_id }); }
-    }
-    const all = Array.from(agg.values());
+    const empty = { hcpLow: [] as any[], hcpHigh: [] as any[], female: [] as any[], scratch: [] as any[] };
+    if (!categoryData?.length) return empty;
+    const ranks = computeSeasonRankings(categoryData as any);
+    const map = (list: typeof ranks.hcpInf) => list.slice(0, 5).map((p) => ({
+      name: p.name,
+      totalPoints: p.total,
+      rounds: p.roundsPlayed,
+      handicap: p.displayHandicap,
+      playerId: p.id,
+    }));
     return {
-      hcpLow: all.filter(p => p.handicap != null && p.handicap <= 14.4).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5),
-      hcpHigh: all.filter(p => p.handicap != null && p.handicap > 14.4).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5),
-      female: all.filter(p => p.gender === 'F').sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5),
-      senior: all.filter(p => p.is_senior).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5),
+      hcpLow: map(ranks.hcpInf),
+      hcpHigh: map(ranks.hcpSup),
+      female: map(ranks.female),
+      scratch: map(ranks.scratch),
     };
   }, [categoryData]);
 

@@ -12,6 +12,7 @@ import { es } from 'date-fns/locale';
 import ScorecardVisual from '@/components/ScorecardVisual';
 import { fetchPublicCircuitData, publicCircuitDataQueryKey } from '@/lib/publicCircuitData';
 import { buildPlayerCategoryHandicapMap } from '@/lib/playerCategoryHandicap';
+import { computeSeasonRankings } from '@/lib/seasonRankings';
 
 interface PlayerProfileDialogProps {
   playerId: string | null;
@@ -57,75 +58,23 @@ const PlayerProfileDialog = ({ playerId, open, onOpenChange }: PlayerProfileDial
     enabled: open,
   });
 
-  const { data: season } = useQuery({
-    queryKey: ['player-profile-dialog-season'],
-    queryFn: async () => {
-      const { data } = await supabase.from('seasons').select('rules_config').eq('active', true).single();
-      return data;
-    },
-    enabled: open,
-  });
-
-  const bestN = (season?.rules_config as any)?.best_n_scores || 8;
-
-  // Compute player category positions
+  // Compute player category positions usando el motor de rankings oficial.
   const positions = useMemo(() => {
     if (!allResults?.length || !playerId) return null;
-
     const categoryHcpMap = buildPlayerCategoryHandicapMap(allResults as any);
-
-    const byPlayer = new Map<string, {
-      gender: string | null;
-      is_senior: boolean;
-      handicap: number | null;
-      scores: { points: number; weighted: number }[];
-    }>();
-
-    for (const r of allResults as any[]) {
-      if (!r.players_public || r.stableford_points == null) continue;
-      const pid = r.player_id;
-      if (!byPlayer.has(pid)) {
-        byPlayer.set(pid, {
-          gender: r.players_public.gender,
-          is_senior: r.players_public.is_senior,
-          handicap: categoryHcpMap.get(pid) ?? r.handicap_at_round ?? r.players_public.current_handicap,
-          scores: [],
-        });
-      }
-      const isMaster = r.rounds?.is_master || false;
-      const coef = r.rounds?.master_coefficient || 1;
-      const weighted = Math.round(r.stableford_points * (isMaster ? coef : 1));
-      byPlayer.get(pid)!.scores.push({ points: r.stableford_points, weighted });
-    }
-
-    const computeTotal = (scores: { weighted: number }[]) =>
-      [...scores].sort((a, b) => b.weighted - a.weighted).slice(0, bestN).reduce((s, x) => s + x.weighted, 0);
-
-    const buildRanking = (filterFn: (p: { gender: string | null; is_senior: boolean; handicap: number | null }) => boolean) => {
-      return Array.from(byPlayer.entries())
-        .filter(([, p]) => filterFn(p))
-        .map(([id, p]) => ({ id, total: computeTotal(p.scores) }))
-        .sort((a, b) => b.total - a.total);
+    const seasonRankings = computeSeasonRankings(allResults as any);
+    const findPos = (list: { id: string; total: number }[]) => {
+      const idx = list.findIndex((r) => r.id === playerId);
+      return idx === -1 ? null : { pos: idx + 1, total: list[idx].total, of: list.length };
     };
-
-    const findPos = (ranking: { id: string; total: number }[]) => {
-      const idx = ranking.findIndex((r) => r.id === playerId);
-      return idx === -1 ? null : { pos: idx + 1, total: ranking[idx].total, of: ranking.length };
-    };
-
-    const hcpLow = buildRanking((p) => p.handicap != null && p.handicap <= 14.4);
-    const hcpHigh = buildRanking((p) => p.handicap != null && p.handicap > 14.4);
-    const female = buildRanking((p) => p.gender === 'F');
-    const senior = buildRanking((p) => p.is_senior);
-
     return {
-      hcpLow: findPos(hcpLow),
-      hcpHigh: findPos(hcpHigh),
-      female: findPos(female),
-      senior: findPos(senior),
+      hcpLow: findPos(seasonRankings.hcpInf),
+      hcpHigh: findPos(seasonRankings.hcpSup),
+      female: findPos(seasonRankings.female),
+      scratch: findPos(seasonRankings.scratch),
       categoryHcp: categoryHcpMap.get(playerId) ?? null,
     };
-  }, [allResults, playerId, bestN]);
+  }, [allResults, playerId]);
 
   if (!player) {
     return (
@@ -209,8 +158,8 @@ const PlayerProfileDialog = ({ playerId, open, onOpenChange }: PlayerProfileDial
       : null;
 
   const subCategories: { label: string; pos: { pos: number; total: number; of: number } | null | undefined }[] = [];
-  if (player.gender === 'F') subCategories.push({ label: 'Femenina', pos: positions?.female });
-  if (player.is_senior) subCategories.push({ label: 'Sénior', pos: positions?.senior });
+  if (player.gender === 'F') subCategories.push({ label: 'Damas', pos: positions?.female });
+  if (positions?.scratch) subCategories.push({ label: 'Scratch', pos: positions?.scratch });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

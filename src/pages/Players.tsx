@@ -72,7 +72,7 @@ const RANK_LABELS: Record<CategoryKey, string> = {
   hcpInf: 'HcpInf',
   hcpSup: 'HcpSup',
   female: 'Fem',
-  senior: 'Sr',
+  scratch: 'Scr',
 };
 
 const Players = () => {

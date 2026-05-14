@@ -7,7 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { fetchPublicCircuitData, publicCircuitDataQueryKey } from '@/lib/publicCircuitData';
-import { buildPlayerCategoryHandicapMap, buildPlayerLastHandicapMap, categorizeByHandicap } from '@/lib/playerCategoryHandicap';
+import { useCategoryRankings } from '@/hooks/useCategoryRankings';
 import PlayerProfileDialog from '@/components/PlayerProfileDialog';
 
 const Index = () => {
@@ -35,37 +35,16 @@ const Index = () => {
         .sort((a, b) => (b.stableford_points ?? 0) - (a.stableford_points ?? 0)),
   });
 
-  const buildRanking = (cat: 'hcp_low' | 'hcp_high') => {
-    if (!topResults?.length) return [];
-    const agg = new Map<string, { name: string; totalPoints: number; rounds: number; handicap: number | null; playerId: string; category: string | null }>();
-    // Categoría fijada por el HCP de la primera ronda jugada (consistente con Rankings).
-    const categoryHcpMap = buildPlayerCategoryHandicapMap(topResults as any);
-    // Para mostrar al lado del nombre: último HCP jugado.
-    const lastHcpMap = buildPlayerLastHandicapMap(topResults as any);
-    const playerCat = new Map<string, 'hcp_low' | 'hcp_high'>();
-    for (const r of topResults) {
-      if (playerCat.has(r.player_id)) continue;
-      const resolved = categorizeByHandicap(categoryHcpMap.get(r.player_id) ?? null);
-      if (resolved) playerCat.set(r.player_id, resolved);
-    }
-    for (const r of topResults) {
-      const p = (r as any).players_public;
-      if (!p) continue;
-      if (playerCat.get(r.player_id) !== cat) continue;
-      const displayHcp = lastHcpMap.get(r.player_id) ?? r.handicap_at_round ?? p.current_handicap;
-      const pts = r.stableford_points ?? 0;
-      const existing = agg.get(r.player_id);
-      if (existing) {
-        existing.totalPoints += pts;
-        existing.rounds += 1;
-      } else {
-        agg.set(r.player_id, { name: p.name, totalPoints: pts, rounds: 1, handicap: displayHcp, playerId: r.player_id, category: cat });
-      }
-    }
-    return Array.from(agg.values()).sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 5);
-  };
-  const rankingLow = buildRanking('hcp_low');
-  const rankingHigh = buildRanking('hcp_high');
+  const seasonRankings = useCategoryRankings();
+  const toRow = (p: typeof seasonRankings.hcpInf[number]) => ({
+    playerId: p.id,
+    name: p.name,
+    totalPoints: p.total,
+    rounds: p.roundsPlayed,
+    handicap: p.displayHandicap,
+  });
+  const rankingLow = seasonRankings.hcpInf.slice(0, 5).map(toRow);
+  const rankingHigh = seasonRankings.hcpSup.slice(0, 5).map(toRow);
 
   const totalRounds = rounds?.length ?? 0;
   const uniquePlayers = topResults ? new Set(topResults.map(r => r.player_id)).size : 0;
