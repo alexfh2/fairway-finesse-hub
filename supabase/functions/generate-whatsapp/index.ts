@@ -72,54 +72,54 @@ serve(async (req) => {
       .filter((r: any) => r.is_senior_prize || r.players?.is_senior === true)
       .sort((a: any, b: any) => (b.stableford_points ?? 0) - (a.stableford_points ?? 0));
 
-    const langLabel = language === "ca" ? "català" : "castellà";
-    const publishedUrl = "https://verdant-stats.lovable.app/rankings";
+    const publishedUrl = "https://circuitoalbatros.lovable.app/rankings";
 
-    const prompt = `Genera un missatge de WhatsApp en ${langLabel} per compartir els RESULTATS d'una jornada de golf del circuit Gastronòmic Golf Experience.
+    const prompt = `Genera un mensaje de WhatsApp en castellano para compartir los RESULTADOS de una jornada de golf del Circuito Albatros.
 
-IMPORTANT: La competició és en modalitat STABLEFORD. Tots els resultats són en PUNTS STABLEFORD, NO en cops. No mencionIs "cops" ni "scratch".
+IMPORTANTE: La competición es en modalidad STABLEFORD. Todos los resultados son en PUNTOS STABLEFORD, NO en golpes. No menciones "golpes" ni "scratch".
 
-TEXT DE REFERÈNCIA (adapta l'estil però amb dades Stableford):
+TEXTO DE REFERENCIA (adapta el estilo pero con datos Stableford):
 ---
-Resultats ${round.name} — Temporada ${season?.year || "N/A"}
+Resultados ${round.name} — Temporada ${season?.year || "N/A"}
 
-RESULTATS DE LA ${round.name} DEL GASTRONÒMIC GOLF EXPERIENCE ${season?.year || ""}
+RESULTADOS DE LA ${round.name} DEL CIRCUITO ALBATROS ${season?.year || ""}
 
-El ${round.club || "club"} ha acollit la ${round.name} del Gastronòmic Golf Experience, disputada el ${round.date}, amb la participació de ${results.length} jugadors.
-${round.sponsor ? `Jornada patrocinada per ${round.sponsor}.` : ""}
-${round.is_master ? "⭐ JORNADA MASTER — Punts x1.25!" : ""}
+El ${round.club || "club"} ha acogido la ${round.name} del Circuito Albatros, disputada el ${round.date}, con la participación de ${results.length} jugadores.
+${round.sponsor ? `Jornada patrocinada por ${round.sponsor}.` : ""}
+${round.is_master ? "⭐ JORNADA MASTER — ¡Puntos x1.25!" : ""}
 
-En la classificació Hàndicap Baix (≤15), [NOM] s'ha imposat amb [X] punts Stableford, seguit de [NOM] ([X]) i [NOM] ([X]).
+En la clasificación Handicap Bajo (≤15), [NOMBRE] se ha impuesto con [X] puntos Stableford, seguido de [NOMBRE] ([X]) y [NOMBRE] ([X]).
 
-En la classificació Hàndicap Alt (15.1–36), [NOM] s'ha imposat amb [X] punts, seguit de [NOM] ([X]) i [NOM] ([X]).
-${females.length > 0 ? `\nEn la classificació Femenina, [NOM] s'ha imposat amb [X] punts.` : ""}
-${seniors.length > 0 ? `\nEn la classificació Sènior (+65), [NOM] s'ha imposat amb [X] punts.` : ""}
+En la clasificación Handicap Alto (15.1–36), [NOMBRE] se ha impuesto con [X] puntos, seguido de [NOMBRE] ([X]) y [NOMBRE] ([X]).
+${females.length > 0 ? `\nEn la clasificación Femenina, [NOMBRE] se ha impuesto con [X] puntos.` : ""}
+${seniors.length > 0 ? `\nEn la clasificación Senior (+65), [NOMBRE] se ha impuesto con [X] puntos.` : ""}
 
-Les classificacions completes i estadístiques detallades es poden consultar a: ${publishedUrl}
+Las clasificaciones completas y estadísticas detalladas se pueden consultar en: ${publishedUrl}
 ---
 
-DADES REALS:
-CLASSIFICACIÓ HANDICAP BAIX (≤15.0) — ${hcpLow.length} jugadors:
+DATOS REALES:
+CLASIFICACIÓN HANDICAP BAJO (≤15.0) — ${hcpLow.length} jugadores:
 ${hcpLow.slice(0, 3).map((r: any, i: number) => `${i + 1}. ${r.players?.name} — ${r.stableford_points} pts (Hcp ${r.handicap_at_round})`).join("\n")}
 
-CLASSIFICACIÓ HANDICAP ALT (15.1–36.0) — ${hcpHigh.length} jugadors:
+CLASIFICACIÓN HANDICAP ALTO (15.1–36.0) — ${hcpHigh.length} jugadores:
 ${hcpHigh.slice(0, 3).map((r: any, i: number) => `${i + 1}. ${r.players?.name} — ${r.stableford_points} pts (Hcp ${r.handicap_at_round})`).join("\n")}
 
-${females.length > 0 ? `CLASSIFICACIÓ FEMENINA — Guanyadora:\n1. ${females[0].players?.name} — ${females[0].stableford_points} pts (Hcp ${females[0].handicap_at_round})` : ""}
-${seniors.length > 0 ? `CLASSIFICACIÓ SÈNIOR (+65) — Guanyador:\n1. ${seniors[0].players?.name} — ${seniors[0].stableford_points} pts (Hcp ${seniors[0].handicap_at_round})` : ""}
+${females.length > 0 ? `CLASIFICACIÓN FEMENINA — Ganadora:\n1. ${females[0].players?.name} — ${females[0].stableford_points} pts (Hcp ${females[0].handicap_at_round})` : ""}
+${seniors.length > 0 ? `CLASIFICACIÓN SENIOR (+65) — Ganador:\n1. ${seniors[0].players?.name} — ${seniors[0].stableford_points} pts (Hcp ${seniors[0].handicap_at_round})` : ""}
 
-Total participants: ${results.length}
+Total participantes: ${results.length}
 
-INSTRUCCIONS:
-- Segueix EXACTAMENT l'estructura del text de referència: títol, introducció, resultats per categories, link final
-- Per a Hàndicap Baix i Alt: inclou els 3 primers classificats
-- Per a Femenina i Sènior: menciona NOMÉS el/la guanyador/a
-- IMPORTANT: Deixa una línia en blanc entre cada secció/categoria per facilitar la lectura
-- Utilitza format *negretes* de WhatsApp per al títol i noms de categories
-- To formal i informatiu, sense emojis excessius (només algun puntual si escau)
-- SEMPRE punts Stableford, MAI cops ni scratch
-- Inclou el link a les classificacions al final: ${publishedUrl}
-- Retorna NOMÉS el text del missatge, sense JSON ni markdown`;
+INSTRUCCIONES:
+- Escribe SIEMPRE en castellano
+- Sigue EXACTAMENTE la estructura del texto de referencia: título, introducción, resultados por categorías, enlace final
+- Para Handicap Bajo y Alto: incluye los 3 primeros clasificados
+- Para Femenina y Senior: menciona SOLO al ganador/a
+- IMPORTANTE: Deja una línea en blanco entre cada sección/categoría para facilitar la lectura
+- Utiliza formato *negritas* de WhatsApp para el título y nombres de categorías
+- Tono formal e informativo, sin emojis excesivos (solo alguno puntual si procede)
+- SIEMPRE puntos Stableford, NUNCA golpes ni scratch
+- Incluye el enlace a las clasificaciones al final: ${publishedUrl}
+- Devuelve SOLO el texto del mensaje, sin JSON ni markdown`;
 
     const lovableApiKey = Deno.env.get("LOVABLE_API_KEY");
     if (!lovableApiKey) throw new Error("LOVABLE_API_KEY not configured");
@@ -133,7 +133,7 @@ INSTRUCCIONS:
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: "Ets un redactor esportiu de golf. Generes missatges de WhatsApp clars, formals i concisos." },
+          { role: "system", content: "Eres un redactor deportivo de golf. Generas mensajes de WhatsApp claros, formales y concisos en castellano." },
           { role: "user", content: prompt },
         ],
       }),
