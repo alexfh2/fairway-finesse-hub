@@ -253,7 +253,7 @@ const Rankings = () => {
             {t('rankings.generalClassification')} — {t('common.season')} 2026
           </p>
           <span className="inline-block text-[9px] px-2 py-0.5 border border-accent/30 text-accent/80 font-body font-medium tracking-[0.15em] uppercase">
-            Mejores {bestN} jornadas
+            Mejores {BEST_N_ROUNDS} tarjetas + {BONUS_PER_ROUND} pts/jornada
           </span>
         </div>
 
