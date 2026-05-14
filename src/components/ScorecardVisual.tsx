@@ -219,7 +219,7 @@ const ScorecardVisual: React.FC<ScorecardVisualProps> = ({ scores, par = DEFAULT
       </thead>
       <tbody>
         <tr>
-          <td className={`${resultLabelClass} font-semibold text-foreground`}>Cops</td>
+          <td className={`${resultLabelClass} font-semibold text-foreground`}>Golpes</td>
           {halfScores.map((s, i) => (
             <td key={i} className={`${resultCellClass} bg-background`}>
               <div className="flex items-center justify-center h-[2.5rem]">
@@ -266,7 +266,7 @@ const ScorecardVisual: React.FC<ScorecardVisualProps> = ({ scores, par = DEFAULT
           <div className="font-mono font-bold text-base text-foreground mt-1">{totalPar}</div>
         </div>
         <div className="text-center border-x border-border/40">
-          <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Total cops</div>
+          <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Total golpes</div>
           <div className="font-mono font-bold text-base text-cream mt-1">
             {totalStrokes != null ? totalStrokes : '—'}
             {hasLiftedBall && <span className="text-[9px] text-muted-foreground ml-1">(incomplet)</span>}
