@@ -55,9 +55,9 @@ const statusColors: Record<RoundStatus, string> = {
 };
 
 const statusLabels: Record<RoundStatus, string> = {
-  draft: 'Esborrany',
+  draft: 'Borrador',
   imported: 'Importada',
-  review: 'Revisió',
+  review: 'Revisión',
   validated: 'Validada',
   published: 'Publicada',
 };
@@ -133,10 +133,10 @@ const AdminRounds = () => {
       if (!data?.success) throw new Error(data?.error || 'Error parsing');
 
       setImportedRounds(data.rounds as ParsedRound[]);
-      toast({ title: `${data.rounds.length} jornades detectades`, description: 'Revisa i edita les dades abans de guardar.' });
+      toast({ title: `${data.rounds.length} jornadas detectadas`, description: 'Revisa y edita los datos antes de guardar.' });
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Error desconegut';
-      toast({ title: 'Error d\'importació', description: message, variant: 'destructive' });
+      const message = err instanceof Error ? err.message : 'Error desconocido';
+      toast({ title: 'Error de importación', description: message, variant: 'destructive' });
     } finally {
       setImportLoading(false);
     }
@@ -158,7 +158,7 @@ const AdminRounds = () => {
       if (error) throw error;
       if (!data?.success) throw new Error(data?.error || 'Error parsing');
       setImportedRounds(data.rounds as ParsedRound[]);
-      toast({ title: `${data.rounds.length} jornades detectades`, description: 'Revisa i edita les dades abans de guardar.' });
+      toast({ title: `${data.rounds.length} jornadas detectadas`, description: 'Revisa y edita los datos antes de guardar.' });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Error desconegut';
       toast({ title: "Error d'importació", description: message, variant: 'destructive' });
@@ -195,7 +195,7 @@ const AdminRounds = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-rounds'] });
-      toast({ title: `${importedRounds.length} jornades importades!` });
+      toast({ title: `${importedRounds.length} jornadas importadas!` });
       setImportedRounds([]);
       setShowImport(false);
     },
@@ -211,7 +211,7 @@ const AdminRounds = () => {
       if (form.course_par.trim()) {
         coursePar = form.course_par.split(',').map(v => parseInt(v.trim())).filter(v => !isNaN(v));
         if (coursePar.length !== 18) {
-          throw new Error('El par del camp ha de tenir exactament 18 valors');
+          throw new Error('El par del campo debe tener exactamente 18 valores');
         }
       }
 
@@ -219,7 +219,7 @@ const AdminRounds = () => {
       if (form.course_handicap.trim()) {
         courseHandicap = form.course_handicap.split(',').map(v => parseInt(v.trim())).filter(v => !isNaN(v));
         if (courseHandicap.length !== 18) {
-          throw new Error('El handicap del camp ha de tenir exactament 18 valors');
+          throw new Error('El handicap del campo debe tener exactamente 18 valores');
         }
       }
 
@@ -227,7 +227,7 @@ const AdminRounds = () => {
       if (form.has_women_handicap && form.course_handicap_women.trim()) {
         courseHandicapWomen = form.course_handicap_women.split(',').map(v => parseInt(v.trim())).filter(v => !isNaN(v));
         if (courseHandicapWomen.length !== 18) {
-          throw new Error('El handicap femení ha de tenir exactament 18 valors');
+          throw new Error('El handicap femenino debe tener exactamente 18 valores');
         }
       }
 
@@ -257,7 +257,7 @@ const AdminRounds = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-rounds'] });
-      toast({ title: editingRound ? 'Jornada actualitzada' : 'Jornada creada' });
+      toast({ title: editingRound ? 'Jornada actualizada' : 'Jornada creada' });
       setDialogOpen(false);
       setEditingRound(null);
     },
@@ -379,19 +379,19 @@ const AdminRounds = () => {
 
       const { data, error } = await supabase.functions.invoke('extract-course-par', { body });
       if (error) throw error;
-      if (!data?.success) throw new Error(data?.error || 'No s\'ha pogut extreure les dades');
+      if (!data?.success) throw new Error(data?.error || 'No se han podido extraer los datos');
 
       const parArray: number[] = data.par;
       const hcpArray: number[] = data.handicap;
       updateField('course_par', parArray.join(', '));
       updateField('course_handicap', hcpArray.join(', '));
       toast({
-        title: 'Dades extretes correctament',
-        description: `Par ${parArray.reduce((a: number, b: number) => a + b, 0)} (${parArray.length} forats) + Handicap`,
+        title: 'Datos extraídos correctamente',
+        description: `Par ${parArray.reduce((a: number, b: number) => a + b, 0)} (${parArray.length} hoyos) + Handicap`,
       });
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Error desconegut';
-      toast({ title: 'Error extraient dades', description: message, variant: 'destructive' });
+      const message = err instanceof Error ? err.message : 'Error desconocido';
+      toast({ title: 'Error extrayendo datos', description: message, variant: 'destructive' });
     } finally {
       setExtractingPar(false);
     }
@@ -418,17 +418,17 @@ const AdminRounds = () => {
 
       const { data, error } = await supabase.functions.invoke('extract-course-par', { body });
       if (error) throw error;
-      if (!data?.success) throw new Error(data?.error || 'No s\'ha pogut extreure les dades');
+      if (!data?.success) throw new Error(data?.error || 'No se han podido extraer los datos');
 
       const hcpArray: number[] = data.handicap_women;
       updateField('course_handicap_women', hcpArray.join(', '));
       toast({
-        title: 'Handicaps de dones extrets',
-        description: `${hcpArray.length} forats`,
+        title: 'Handicaps de mujeres extraídos',
+        description: `${hcpArray.length} hoyos`,
       });
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Error desconegut';
-      toast({ title: 'Error extraient handicaps de dones', description: message, variant: 'destructive' });
+      const message = err instanceof Error ? err.message : 'Error desconocido';
+      toast({ title: 'Error extrayendo handicaps de mujeres', description: message, variant: 'destructive' });
     } finally {
       setExtractingWomen(false);
     }
@@ -438,7 +438,7 @@ const AdminRounds = () => {
     <div className="animate-fade-in">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-        <h1 className="font-display text-2xl font-bold">Jornades</h1>
+        <h1 className="font-display text-2xl font-bold">Jornadas</h1>
         <div className="flex items-center gap-2 flex-wrap">
           {seasons && seasons.length > 0 && (
             <Select value={activeSeasonId} onValueChange={setSelectedSeason}>
@@ -458,7 +458,7 @@ const AdminRounds = () => {
             disabled={!activeSeasonId}
           >
             <Link2 className="h-4 w-4 mr-2" />
-            Importar des d'URL
+            Importar desde URL
           </Button>
           <Button onClick={openCreate} disabled={!activeSeasonId}>
             <Plus className="h-4 w-4 mr-2" />
@@ -472,9 +472,9 @@ const AdminRounds = () => {
         <Card className="border-accent/40 bg-accent/5 mb-6">
           <CardContent className="pt-6 space-y-4">
             <div>
-              <Label className="text-sm font-semibold">Importar calendari</Label>
+              <Label className="text-sm font-semibold">Importar calendario</Label>
               <p className="text-xs text-muted-foreground mb-2">
-                Enganxa l'URL de la pàgina del calendari o puja una imatge/PDF amb les jornades.
+                Pega la URL de la página del calendario o sube una imagen/PDF con las jornadas.
               </p>
               <div className="flex gap-2">
                 <Input
@@ -484,12 +484,12 @@ const AdminRounds = () => {
                 />
                 <Button onClick={handleImport} disabled={importLoading}>
                   <Download className="h-4 w-4 mr-2" />
-                  {importLoading ? 'Llegint...' : 'Llegir URL'}
+                  {importLoading ? 'Leyendo...' : 'Leer URL'}
                 </Button>
               </div>
               <div className="flex gap-2 items-end">
                 <div className="flex-1 space-y-1">
-                  <Label className="text-xs">Imatge o PDF del calendari</Label>
+                  <Label className="text-xs">Imagen o PDF del calendario</Label>
                   <Input
                     type="file"
                     accept=".pdf,.jpg,.jpeg,.png,.webp"
@@ -499,7 +499,7 @@ const AdminRounds = () => {
                 </div>
                 <Button onClick={handleImportFromFile} disabled={importLoading || !calendarFile}>
                   <Upload className="h-4 w-4 mr-2" />
-                  {importLoading ? 'Llegint...' : 'Llegir fitxer'}
+                  {importLoading ? 'Leyendo...' : 'Leer archivo'}
                 </Button>
               </div>
             </div>
@@ -507,14 +507,14 @@ const AdminRounds = () => {
             {importedRounds.length > 0 && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold">{importedRounds.length} jornades detectades — revisa i edita:</p>
+                  <p className="text-sm font-semibold">{importedRounds.length} jornadas detectadas — revisa y edita:</p>
                   <Button
                     size="sm"
                     onClick={() => saveImportedRounds.mutate()}
                     disabled={saveImportedRounds.isPending}
                   >
                     <Check className="h-4 w-4 mr-2" />
-                    {saveImportedRounds.isPending ? 'Guardant...' : 'Guardar totes'}
+                    {saveImportedRounds.isPending ? 'Guardando...' : 'Guardar todas'}
                   </Button>
             </div>
 
@@ -531,11 +531,11 @@ const AdminRounds = () => {
                           </div>
                           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                             <div>
-                              <Label className="text-xs">Camp</Label>
+                              <Label className="text-xs">Campo</Label>
                               <Input value={r.name} onChange={(e) => updateImportedRound(idx, 'name', e.target.value)} className="h-8 text-sm" />
                             </div>
                             <div>
-                              <Label className="text-xs">Data inici</Label>
+                              <Label className="text-xs">Fecha inicio</Label>
                               <Input type="date" value={r.dates[0] || ''} onChange={(e) => {
                                 const newDates = [...r.dates];
                                 newDates[0] = e.target.value;
@@ -543,7 +543,7 @@ const AdminRounds = () => {
                               }} className="h-8 text-sm" />
                             </div>
                             <div>
-                              <Label className="text-xs">Data fi</Label>
+                              <Label className="text-xs">Fecha fin</Label>
                               <Input type="date" value={r.dates.length > 1 ? r.dates[r.dates.length - 1] : ''} onChange={(e) => {
                                 const newDates = [r.dates[0] || '', e.target.value].filter(Boolean);
                                 updateImportedRound(idx, 'dates', newDates as any);
@@ -571,15 +571,15 @@ const AdminRounds = () => {
       {!activeSeasonId ? (
         <Card className="border-border/60">
           <CardContent className="p-8 text-center text-muted-foreground">
-            Crea primer una temporada per poder afegir jornades.
+            Crea primero una temporada para poder añadir jornadas.
           </CardContent>
         </Card>
       ) : isLoading ? (
-        <p className="text-muted-foreground">Carregant...</p>
+        <p className="text-muted-foreground">Cargando...</p>
       ) : !rounds?.length ? (
         <Card className="border-border/60">
           <CardContent className="p-8 text-center text-muted-foreground">
-            No hi ha jornades en aquesta temporada. Importa des d'una URL o crea-les manualment.
+            No hay jornadas en esta temporada. Importa desde una URL o créalas manualmente.
           </CardContent>
         </Card>
       ) : (
@@ -605,14 +605,14 @@ const AdminRounds = () => {
                       )}
                     </div>
                     <span className="text-xs text-muted-foreground hidden sm:inline-block mr-2">
-                      Clica per gestionar
+                      Clica para gestionar
                     </span>
                   </CardHeader>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <CardContent className="border-t border-border/40 bg-muted/10 pt-5 pb-5 space-y-4">
                     <p className="text-xs text-muted-foreground">
-                      Selecciona què vols fer amb aquesta jornada. Cada acció obre una finestra amb instruccions detallades.
+                      Selecciona qué quieres hacer con esta jornada. Cada acción abre una ventana con instrucciones detalladas.
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -626,9 +626,9 @@ const AdminRounds = () => {
                             <Flag className="h-5 w-5" />
                           </div>
                           <div className="flex-1">
-                            <div className="font-semibold text-sm mb-1">Omplir dades del camp</div>
+                            <div className="font-semibold text-sm mb-1">Rellenar datos del campo</div>
                             <div className="text-xs text-muted-foreground leading-relaxed">
-                              Edita el nom, data, patrocinador i el par + handicap de cada forat (pots pujar foto/PDF de la tarjeta).
+                              Edita el nombre, fecha, patrocinador y el par + handicap de cada hoyo (puedes subir foto/PDF de la tarjeta).
                             </div>
                           </div>
                         </div>
@@ -644,9 +644,9 @@ const AdminRounds = () => {
                             <FileSpreadsheet className="h-5 w-5" />
                           </div>
                           <div className="flex-1">
-                            <div className="font-semibold text-sm mb-1">Omplir resultats</div>
+                            <div className="font-semibold text-sm mb-1">Rellenar resultados</div>
                             <div className="text-xs text-muted-foreground leading-relaxed">
-                              Importa els resultats des d'un Excel, GolfDirecto o Teeone, o introdueix-los manualment.
+                              Importa los resultados desde un Excel, GolfDirecto o Teeone, o introdúcelos manualmente.
                             </div>
                           </div>
                         </div>
@@ -663,11 +663,11 @@ const AdminRounds = () => {
                             <Newspaper className="h-5 w-5" />
                           </div>
                           <div className="flex-1">
-                            <div className="font-semibold text-sm mb-1">Generar notícia amb IA</div>
+                            <div className="font-semibold text-sm mb-1">Generar noticia con IA</div>
                             <div className="text-xs text-muted-foreground leading-relaxed">
                               {round.status === 'published'
-                                ? 'Crea automàticament un text en català i castellà destacant els guanyadors.'
-                                : 'Disponible només quan la jornada estigui publicada.'}
+                                ? 'Crea automáticamente un texto en castellano destacando a los ganadores.'
+                                : 'Disponible solo cuando la jornada esté publicada.'}
                             </div>
                           </div>
                         </div>
@@ -687,7 +687,7 @@ const AdminRounds = () => {
                             <div className="flex-1">
                               <div className="font-semibold text-sm mb-1">Publicar jornada</div>
                               <div className="text-xs text-muted-foreground leading-relaxed">
-                                Fa visible la jornada al públic. Un cop publicada podràs generar la notícia.
+                                Hace visible la jornada al público. Una vez publicada podrás generar la noticia.
                               </div>
                             </div>
                           </div>
@@ -705,7 +705,7 @@ const AdminRounds = () => {
                             <div className="flex-1">
                               <div className="font-semibold text-sm mb-1">Despublicar jornada</div>
                               <div className="text-xs text-muted-foreground leading-relaxed">
-                                Torna la jornada a esborrany. Deixarà d'estar visible al públic.
+                                Devuelve la jornada a borrador. Dejará de estar visible al público.
                               </div>
                             </div>
                           </div>
@@ -724,7 +724,7 @@ const AdminRounds = () => {
                           <div className="flex-1">
                             <div className="font-semibold text-sm mb-1 text-destructive">Eliminar jornada</div>
                             <div className="text-xs text-muted-foreground leading-relaxed">
-                              Esborra la jornada i tots els seus resultats, fotos i notícies. Aquesta acció no es pot desfer.
+                              Borra la jornada y todos sus resultados, fotos y noticias. Esta acción no se puede deshacer.
                             </div>
                           </div>
                         </div>
@@ -743,7 +743,7 @@ const AdminRounds = () => {
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-display">
-              {editingRound ? 'Editar jornada' : 'Nova jornada'}
+              {editingRound ? 'Editar jornada' : 'Nueva jornada'}
             </DialogTitle>
           </DialogHeader>
           {editingRound && (
@@ -754,7 +754,7 @@ const AdminRounds = () => {
           <form onSubmit={(e) => { e.preventDefault(); saveMutation.mutate(); }} className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label>Nom</Label>
+                <Label>Nombre</Label>
                 <Input value={form.name} onChange={(e) => updateField('name', e.target.value)} required />
               </div>
               <div className="space-y-2">
@@ -764,30 +764,30 @@ const AdminRounds = () => {
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
-                <Label>Data inici</Label>
+                <Label>Fecha inicio</Label>
                 <Input type="date" value={form.date} onChange={(e) => updateField('date', e.target.value)} required />
               </div>
               <div className="space-y-2">
-                <Label>Data fi (opcional)</Label>
+                <Label>Fecha fin (opcional)</Label>
                 <Input type="date" value={form.end_date} onChange={(e) => updateField('end_date', e.target.value)} />
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Camp</Label>
-              <Input value={form.course} onChange={(e) => updateField('course', e.target.value)} placeholder="Nom del camp de golf" />
+              <Label>Campo</Label>
+              <Input value={form.course} onChange={(e) => updateField('course', e.target.value)} placeholder="Nombre del campo de golf" />
             </div>
             <div className="space-y-2">
               <Label>Patrocinador</Label>
               <Input value={form.sponsor} onChange={(e) => updateField('sponsor', e.target.value)} />
             </div>
             <div className="space-y-3">
-              <Label className="font-semibold">Dades del camp (par + handicap)</Label>
+              <Label className="font-semibold">Datos del campo (par + handicap)</Label>
               <p className="text-xs text-muted-foreground">
-                Puja una foto/PDF de la tarjeta del camp o enganxa la URL de la web per extreure automàticament el par i el handicap (stroke index) de cada forat.
+                Sube una foto/PDF de la tarjeta del campo o pega la URL de la web para extraer automáticamente el par y el handicap (stroke index) de cada hoyo.
               </p>
               <div className="flex gap-2 items-end">
                 <div className="flex-1 space-y-1">
-                  <Label className="text-xs">URL de la web del camp</Label>
+                  <Label className="text-xs">URL de la web del campo</Label>
                   <Input
                     value={courseUrl}
                     onChange={(e) => setCourseUrl(e.target.value)}
@@ -811,7 +811,7 @@ const AdminRounds = () => {
                 </div>
                 <Button type="button" variant="outline" size="sm" onClick={() => handleExtract('file')} disabled={extractingPar || !courseFile}>
                   {extractingPar ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Upload className="h-4 w-4 mr-1" />}
-                  Fitxer
+                  Archivo
                 </Button>
               </div>
               {/* Scorecard-style table for par + handicap */}
@@ -831,7 +831,7 @@ const AdminRounds = () => {
                     <table className="w-full text-xs border-collapse">
                       <thead>
                         <tr className="bg-muted/50">
-                          <th className="border border-border px-1 py-1 text-left font-semibold w-12">Forat</th>
+                          <th className="border border-border px-1 py-1 text-left font-semibold w-12">Hoyo</th>
                           {Array.from({ length: 9 }, (_, i) => (
                             <th key={i} className="border border-border px-1 py-1 text-center font-semibold w-8">
                               {offset + i + 1}
@@ -883,9 +883,9 @@ const AdminRounds = () => {
             <div className="space-y-3 rounded-md border border-border/60 bg-muted/20 p-3">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <Label className="font-semibold">Distribució handicaps específica per a dones</Label>
+                  <Label className="font-semibold">Distribución de handicaps específica para mujeres</Label>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Activa-ho si el camp té una distribució de handicap per forat diferent per a jugadores femenines. Si està activada, s'utilitzarà aquesta tarjeta per calcular els punts Stableford de les dones.
+                    Actívalo si el campo tiene una distribución de handicap por hoyo diferente para jugadoras femeninas. Si está activada, se utilizará esta tarjeta para calcular los puntos Stableford de las mujeres.
                   </p>
                 </div>
                 <Switch
@@ -901,7 +901,7 @@ const AdminRounds = () => {
                 <>
                   <div className="flex gap-2 items-end">
                     <div className="flex-1 space-y-1">
-                      <Label className="text-xs">URL de la web del camp (handicap dones)</Label>
+                      <Label className="text-xs">URL de la web del campo (handicap mujeres)</Label>
                       <Input
                         value={courseUrlWomen}
                         onChange={(e) => setCourseUrlWomen(e.target.value)}
@@ -915,7 +915,7 @@ const AdminRounds = () => {
                   </div>
                   <div className="flex gap-2 items-end">
                     <div className="flex-1 space-y-1">
-                      <Label className="text-xs">Foto o PDF de la tarjeta (handicap dones)</Label>
+                      <Label className="text-xs">Foto o PDF de la tarjeta (handicap mujeres)</Label>
                       <Input
                         type="file"
                         accept=".pdf,.jpg,.jpeg,.png,.webp"
@@ -925,7 +925,7 @@ const AdminRounds = () => {
                     </div>
                     <Button type="button" variant="outline" size="sm" onClick={() => handleExtractWomen('file')} disabled={extractingWomen || !courseFileWomen}>
                       {extractingWomen ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Upload className="h-4 w-4 mr-1" />}
-                      Fitxer
+                      Archivo
                     </Button>
                   </div>
                 </>
@@ -946,7 +946,7 @@ const AdminRounds = () => {
                     <table className="w-full text-xs border-collapse">
                       <thead>
                         <tr className="bg-muted/50">
-                          <th className="border border-border px-1 py-1 text-left font-semibold w-12">Forat</th>
+                          <th className="border border-border px-1 py-1 text-left font-semibold w-12">Hoyo</th>
                           {Array.from({ length: 9 }, (_, i) => (
                             <th key={i} className="border border-border px-1 py-1 text-center font-semibold w-8">
                               {offset + i + 1}
@@ -980,10 +980,10 @@ const AdminRounds = () => {
 
             <div className="flex items-center gap-3">
               <Switch checked={form.is_master} onCheckedChange={(v) => updateField('is_master', v)} />
-              <Label>Prova MASTER (coef. ×1.25)</Label>
+              <Label>Prueba MASTER (coef. ×1.25)</Label>
             </div>
             <Button type="submit" className="w-full" disabled={saveMutation.isPending}>
-              {saveMutation.isPending ? 'Guardant...' : 'Guardar'}
+              {saveMutation.isPending ? 'Guardando...' : 'Guardar'}
             </Button>
           </form>
         </DialogContent>
@@ -994,7 +994,7 @@ const AdminRounds = () => {
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-display">
-              Importar resultats — {resultsRound?.name}
+              Importar resultados — {resultsRound?.name}
             </DialogTitle>
           </DialogHeader>
           {resultsRound && (
@@ -1018,18 +1018,18 @@ const AdminRounds = () => {
       <AlertDialog open={!!deletingRound} onOpenChange={(open) => !open && setDeletingRound(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Eliminar {deletingRound?.name}?</AlertDialogTitle>
+            <AlertDialogTitle>¿Eliminar {deletingRound?.name}?</AlertDialogTitle>
             <AlertDialogDescription>
-              S'eliminaran tots els resultats, fotos i dades associades a aquesta jornada. Aquesta acció no es pot desfer.
+              Se eliminarán todos los resultados, fotos y datos asociados a esta jornada. Esta acción no se puede deshacer.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel·lar</AlertDialogCancel>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => deletingRound && deleteMutation.mutate(deletingRound.id)}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {deleteMutation.isPending ? 'Eliminant...' : 'Eliminar'}
+              {deleteMutation.isPending ? 'Eliminando...' : 'Eliminar'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

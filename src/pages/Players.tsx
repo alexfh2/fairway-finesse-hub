@@ -144,16 +144,16 @@ const Players = () => {
   }, [players, statsByPlayer, rankPositions]);
 
   const filterCategories = [
-    { key: 'low', label: 'HCP Baix (≤15)' },
-    { key: 'high', label: 'HCP Alt (>15)' },
+    { key: 'low', label: 'HCP Bajo (≤15)' },
+    { key: 'high', label: 'HCP Alto (>15)' },
     { key: 'female', label: t('categories.female') },
     { key: 'senior', label: t('categories.senior') },
   ];
 
   const sortOptions = [
-    { key: 'hcp', label: 'Per rànquing' },
-    { key: 'name', label: 'Per nom' },
-    { key: 'handicap', label: 'Per hàndicap' },
+    { key: 'hcp', label: 'Por ranking' },
+    { key: 'name', label: 'Por nombre' },
+    { key: 'handicap', label: 'Por hándicap' },
   ];
 
   const filtered = useMemo(() => {
@@ -193,7 +193,7 @@ const Players = () => {
           <h1 className="font-display text-2xl font-semibold text-foreground">{t('players.title')}</h1>
         </div>
         <p className="text-[11px] font-body text-muted-foreground tracking-wide mb-6">
-          {players?.length || 0} jugadors registrats — {t('common.season')} 2026
+          {players?.length || 0} jugadores registrados — {t('common.season')} 2026
         </p>
 
         {/* Search */}
@@ -202,7 +202,7 @@ const Players = () => {
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Cercar jugador..."
+            placeholder="Buscar jugador..."
             className="pl-9 bg-card/30 border-border/50 font-body text-sm"
           />
         </div>
@@ -210,7 +210,7 @@ const Players = () => {
         {/* Filter pills */}
         <div className="flex items-center gap-4 mb-3">
           <div className="h-px flex-1 bg-border/60" />
-          <span className="font-body text-[10px] font-medium tracking-[0.3em] uppercase text-muted-foreground">Categories</span>
+          <span className="font-body text-[10px] font-medium tracking-[0.3em] uppercase text-muted-foreground">Categorías</span>
           <div className="h-px flex-1 bg-border/60" />
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
@@ -257,7 +257,7 @@ const Players = () => {
           <p className="text-muted-foreground text-sm py-8 text-center">{t('common.loading')}</p>
         ) : (
           <>
-            <p className="text-[11px] font-body text-muted-foreground tracking-wide mb-3">{filtered.length} jugadors</p>
+            <p className="text-[11px] font-body text-muted-foreground tracking-wide mb-3">{filtered.length} jugadores</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {filtered.map(({ player: p, stats, ranks }) => {
                 const rankBadges = (Object.keys(ranks) as CategoryKey[])
@@ -292,7 +292,7 @@ const Players = () => {
                         </div>
                       </div>
                       <div className="shrink-0" title={
-                        stats?.trend === 'up' ? 'Millora' : stats?.trend === 'down' ? 'Empitjora' : 'Estable'
+                        stats?.trend === 'up' ? 'Mejora' : stats?.trend === 'down' ? 'Empeora' : 'Estable'
                       }>
                         {stats?.trend === 'up' && <TrendingUp className="h-4 w-4 text-accent" />}
                         {stats?.trend === 'down' && <TrendingDown className="h-4 w-4 text-destructive" />}
@@ -308,10 +308,10 @@ const Players = () => {
                         <span className="flex items-center gap-1">
                           <Trophy className="h-3 w-3" /> {stats.bestStableford || '—'}
                         </span>
-                        <span>{stats.rounds} {stats.rounds === 1 ? 'prova' : 'proves'}</span>
+                        <span>{stats.rounds} {stats.rounds === 1 ? 'prueba' : 'pruebas'}</span>
                       </div>
                     ) : (
-                      <p className="text-[10px] text-muted-foreground/50 font-body italic">Sense proves jugades</p>
+                      <p className="text-[10px] text-muted-foreground/50 font-body italic">Sin pruebas jugadas</p>
                     )}
 
                     <div className="mt-3 pt-3 border-t border-border/20 text-[9px] text-muted-foreground/50 font-body">

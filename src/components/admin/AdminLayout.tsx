@@ -13,11 +13,11 @@ import {
 
 const sidebarLinks = [
   { path: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
-  { path: '/admin/temporades', label: 'Temporades', icon: Trophy, end: false },
-  { path: '/admin/jornades', label: 'Jornades', icon: Calendar, end: false },
-  { path: '/admin/jugadors', label: 'Jugadors', icon: Users, end: false },
-  { path: '/admin/noticies', label: 'Notícies', icon: FileText, end: false },
-  { path: '/admin/admins', label: 'Administradors', icon: Users, end: false },
+  { path: '/admin/temporades', label: 'Temporadas', icon: Trophy, end: false },
+  { path: '/admin/jornades', label: 'Jornadas', icon: Calendar, end: false },
+  { path: '/admin/jugadors', label: 'Jugadores', icon: Users, end: false },
+  { path: '/admin/noticies', label: 'Noticias', icon: FileText, end: false },
+  { path: '/admin/admins', label: 'Administradores', icon: Users, end: false },
 ];
 
 const AdminLayout = () => {
@@ -68,7 +68,7 @@ const AdminLayout = () => {
             onClick={() => navigate('/')}
           >
             <ChevronLeft className="h-4 w-4 mr-2" />
-            Tornar al lloc
+            Volver al sitio
           </Button>
           <Button
             variant="ghost"
@@ -77,7 +77,7 @@ const AdminLayout = () => {
             onClick={handleSignOut}
           >
             <LogOut className="h-4 w-4 mr-2" />
-            Tancar sessió
+            Cerrar sesión
           </Button>
         </div>
       </aside>

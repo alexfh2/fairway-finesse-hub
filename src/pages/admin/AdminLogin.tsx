@@ -23,8 +23,8 @@ const AdminLogin = () => {
 
     if (error) {
       toast({
-        title: 'Error d\'accés',
-        description: 'Credencials incorrectes. Torna-ho a intentar.',
+        title: 'Error de acceso',
+        description: 'Credenciales incorrectas. Vuelve a intentarlo.',
         variant: 'destructive',
       });
     } else {
@@ -39,12 +39,12 @@ const AdminLogin = () => {
       <Card className="w-full max-w-md border-border/60">
         <CardHeader className="text-center">
           <CardTitle className="font-display text-2xl">Circuito Albatros</CardTitle>
-          <CardDescription>Accés al panell d'administració</CardDescription>
+          <CardDescription>Acceso al panel de administración</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Correu electrònic</Label>
+              <Label htmlFor="email">Correo electrónico</Label>
               <Input
                 id="email"
                 type="email"
@@ -55,7 +55,7 @@ const AdminLogin = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Contrasenya</Label>
+              <Label htmlFor="password">Contraseña</Label>
               <Input
                 id="password"
                 type="password"
@@ -65,7 +65,7 @@ const AdminLogin = () => {
               />
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Accedint...' : 'Accedir'}
+              {isLoading ? 'Accediendo...' : 'Acceder'}
             </Button>
           </form>
         </CardContent>

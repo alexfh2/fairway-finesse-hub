@@ -72,25 +72,25 @@ const Index = () => {
   const totalPoints = topResults ? topResults.reduce((s, r) => s + (r.stableford_points ?? 0), 0) : 0;
 
   const quickLinks = [
-    { icon: Trophy, label: t('home.viewRankings'), desc: 'Consulta la classificació general i per categories', path: '/ranquings' },
-    { icon: BarChart3, label: t('home.viewStats'), desc: 'Descobreix dades, gràfics i comparatives del circuit', path: '/estadistiques' },
-    { icon: Calendar, label: t('home.calendar', 'Calendari'), desc: 'Consulta les properes jornades i esdeveniments', path: '/jornades' },
+    { icon: Trophy, label: t('home.viewRankings'), desc: 'Consulta la clasificación general y por categorías', path: '/ranquings' },
+    { icon: BarChart3, label: t('home.viewStats'), desc: 'Descubre datos, gráficos y comparativas del circuito', path: '/estadistiques' },
+    { icon: Calendar, label: t('home.calendar', 'Calendario'), desc: 'Consulta las próximas jornadas y eventos', path: '/jornades' },
   ];
 
   return (
     <div className="animate-fade-in">
       {/* ——— HERO ——— */}
-      <section className="relative min-h-[68vh] lg:min-h-[78vh] overflow-hidden flex items-center">
+      <section className="relative min-h-[44vh] lg:min-h-[52vh] overflow-hidden flex items-center">
         {/* Background image */}
         <div className="absolute inset-0">
-          <img src={heroBg} alt="" className="w-full h-full object-cover object-bottom" />
+          <img src={heroBg} alt="" className="w-full h-full object-cover" style={{ objectPosition: 'center 18%' }} />
         </div>
         {/* Gradients — keep top transparent so navbar blends */}
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-background/50 to-transparent" />
 
         {/* Hero text — vertically centered, balanced spacing */}
-        <div className="relative z-10 container py-10">
+        <div className="relative z-10 container py-6">
           <p className="font-body text-[11px] font-medium tracking-[0.35em] uppercase text-accent/80 mb-3">
             {t('common.season')} 2026
           </p>
@@ -107,7 +107,7 @@ const Index = () => {
       </section>
 
       {/* ——— QUICK ACCESS ——— */}
-      <section className="container pt-6 pb-4">
+      <section className="container pt-3 pb-4">
         <div className="flex items-center gap-4 mb-4">
           <div className="h-px flex-1 bg-border/60" />
           <h2 className="font-body text-[10px] font-medium tracking-[0.3em] uppercase text-muted-foreground">
@@ -173,8 +173,8 @@ const Index = () => {
                   to="/ranquings"
                   className="flex items-center gap-1 text-[11px] text-accent/80 font-body font-medium tracking-wider uppercase hover:text-accent transition-colors"
                 >
-                  <span className="hidden sm:inline">Veure rànquing complet</span>
-                  <span className="sm:hidden">Veure tot</span>
+                  <span className="hidden sm:inline">Ver ranking completo</span>
+                  <span className="sm:hidden">Ver todo</span>
                   <ChevronRight className="h-3 w-3" />
                 </Link>
               </div>
@@ -208,9 +208,9 @@ const Index = () => {
 
           {/* Stats cards */}
           <div className="flex flex-col gap-4">
-            <StatCard label="Torneigs disputats" value={totalRounds} sub="de 17" icon={<Calendar className="h-5 w-5" />} />
-            <StatCard label="Jugadors actius" value={uniquePlayers} icon={<Users className="h-5 w-5" />} />
-            <StatCard label="Punts acumulats" value={totalPoints.toLocaleString()} icon={<TrendingUp className="h-5 w-5" />} />
+            <StatCard label="Torneos disputados" value={totalRounds} sub="de 17" icon={<Calendar className="h-5 w-5" />} />
+            <StatCard label="Jugadores activos" value={uniquePlayers} icon={<Users className="h-5 w-5" />} />
+            <StatCard label="Puntos acumulados" value={totalPoints.toLocaleString()} icon={<TrendingUp className="h-5 w-5" />} />
           </div>
         </div>
       </section>

@@ -1,7 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import ca from './ca.json';
 import es from './es.json';
 
 i18n
@@ -9,16 +8,15 @@ i18n
   .use(initReactI18next)
   .init({
     resources: {
-      ca: { translation: ca },
       es: { translation: es },
     },
-    fallbackLng: 'ca',
-    lng: 'ca',
+    fallbackLng: 'es',
+    lng: 'es',
     interpolation: {
       escapeValue: false,
     },
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['localStorage'],
       caches: ['localStorage'],
     },
   });

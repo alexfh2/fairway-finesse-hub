@@ -45,7 +45,7 @@ const AdminManageAdmins = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
-      toast({ title: 'Administrador creat' });
+      toast({ title: 'Administrador creado' });
       setDialogOpen(false);
       setEmail('');
       setPassword('');
@@ -62,7 +62,7 @@ const AdminManageAdmins = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
-      toast({ title: 'Administrador eliminat' });
+      toast({ title: 'Administrador eliminado' });
     },
     onError: (err: Error) => {
       toast({ title: 'Error', description: err.message, variant: 'destructive' });
@@ -72,17 +72,17 @@ const AdminManageAdmins = () => {
   return (
     <div className="animate-fade-in">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-2xl font-bold">Administradors</h1>
+        <h1 className="font-display text-2xl font-bold">Administradores</h1>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              Nou admin
+              Nuevo admin
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle className="font-display">Nou administrador</DialogTitle>
+              <DialogTitle className="font-display">Nuevo administrador</DialogTitle>
             </DialogHeader>
             <form
               onSubmit={(e) => {
@@ -92,7 +92,7 @@ const AdminManageAdmins = () => {
               className="space-y-4"
             >
               <div className="space-y-2">
-                <Label>Correu electrònic</Label>
+                <Label>Correo electrónico</Label>
                 <Input
                   type="email"
                   value={email}
@@ -101,7 +101,7 @@ const AdminManageAdmins = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Contrasenya</Label>
+                <Label>Contraseña</Label>
                 <Input
                   type="password"
                   minLength={6}
@@ -111,7 +111,7 @@ const AdminManageAdmins = () => {
                 />
               </div>
               <Button type="submit" className="w-full" disabled={createAdmin.isPending}>
-                {createAdmin.isPending ? 'Creant...' : 'Crear administrador'}
+                {createAdmin.isPending ? 'Creando...' : 'Crear administrador'}
               </Button>
             </form>
           </DialogContent>
@@ -119,11 +119,11 @@ const AdminManageAdmins = () => {
       </div>
 
       {isLoading ? (
-        <p className="text-muted-foreground">Carregant...</p>
+        <p className="text-muted-foreground">Cargando...</p>
       ) : !admins?.length ? (
         <Card className="border-border/60">
           <CardContent className="p-8 text-center text-muted-foreground">
-            No hi ha administradors configurats.
+            No hay administradores configurados.
           </CardContent>
         </Card>
       ) : (
@@ -134,7 +134,7 @@ const AdminManageAdmins = () => {
                 <div>
                   <p className="text-sm font-medium">{admin.user_id}</p>
                   <p className="text-xs text-muted-foreground">
-                    Creat: {new Date(admin.created_at).toLocaleDateString('ca')}
+                    Creado: {new Date(admin.created_at).toLocaleDateString('es')}
                   </p>
                 </div>
                 <Button

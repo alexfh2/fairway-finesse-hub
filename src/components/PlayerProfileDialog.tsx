@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { User, TrendingUp, Trophy, Bird, Target, Square, AlertTriangle } from 'lucide-react';
 import { format } from 'date-fns';
-import { ca, es } from 'date-fns/locale';
+import { es } from 'date-fns/locale';
 import ScorecardVisual from '@/components/ScorecardVisual';
 import { fetchPublicCircuitData, publicCircuitDataQueryKey } from '@/lib/publicCircuitData';
 import { buildPlayerCategoryHandicapMap } from '@/lib/playerCategoryHandicap';
@@ -24,7 +24,7 @@ const initials = (name: string) =>
 
 const PlayerProfileDialog = ({ playerId, open, onOpenChange }: PlayerProfileDialogProps) => {
   const { t, i18n } = useTranslation();
-  const locale = i18n.language === 'ca' ? ca : es;
+  const locale = es;
   const [openCards, setOpenCards] = useState<string[]>([]);
   const [scratchMode, setScratchMode] = useState<Record<string, boolean>>({});
 
@@ -184,8 +184,8 @@ const PlayerProfileDialog = ({ playerId, open, onOpenChange }: PlayerProfileDial
   };
 
   const stats = [
-    { label: 'Mitjana Stb.', value: avgStb, icon: TrendingUp },
-    { label: 'Millor Stb.', value: bestStb, icon: Trophy },
+    { label: 'Media Stb.', value: avgStb, icon: TrendingUp },
+    { label: 'Mejor Stb.', value: bestStb, icon: Trophy },
     { label: 'Birdies/r.', value: n ? (birdies / n).toFixed(1) : '—', icon: Bird },
     { label: 'Pars/r.', value: n ? (pars / n).toFixed(1) : '—', icon: Target },
     { label: 'Bogeys/r.', value: n ? (bogeys / n).toFixed(1) : '—', icon: Square },
@@ -193,9 +193,9 @@ const PlayerProfileDialog = ({ playerId, open, onOpenChange }: PlayerProfileDial
   ];
 
   const parAverages = [
-    { label: 'Mitjana Pars 3', value: formatParAvg(3), count: parGroupStats[3].count, par: 3 },
-    { label: 'Mitjana Pars 4', value: formatParAvg(4), count: parGroupStats[4].count, par: 4 },
-    { label: 'Mitjana Pars 5', value: formatParAvg(5), count: parGroupStats[5].count, par: 5 },
+    { label: 'Media Pares 3', value: formatParAvg(3), count: parGroupStats[3].count, par: 3 },
+    { label: 'Media Pares 4', value: formatParAvg(4), count: parGroupStats[4].count, par: 4 },
+    { label: 'Media Pares 5', value: formatParAvg(5), count: parGroupStats[5].count, par: 5 },
   ];
 
   // Determine main category (by HCP) and subcategories
@@ -203,14 +203,14 @@ const PlayerProfileDialog = ({ playerId, open, onOpenChange }: PlayerProfileDial
   const hcp = positions?.categoryHcp ?? player.current_handicap;
   const mainCategory =
     hcp != null && hcp <= 15.0
-      ? { key: 'hcpLow', label: 'HCP Baix (≤15.0)', pos: positions?.hcpLow }
+      ? { key: 'hcpLow', label: 'HCP Bajo (≤15.0)', pos: positions?.hcpLow }
       : hcp != null
-      ? { key: 'hcpHigh', label: 'HCP Alt (>15.0)', pos: positions?.hcpHigh }
+      ? { key: 'hcpHigh', label: 'HCP Alto (>15.0)', pos: positions?.hcpHigh }
       : null;
 
   const subCategories: { label: string; pos: { pos: number; total: number; of: number } | null | undefined }[] = [];
-  if (player.gender === 'F') subCategories.push({ label: 'Femení', pos: positions?.female });
-  if (player.is_senior) subCategories.push({ label: 'Sènior', pos: positions?.senior });
+  if (player.gender === 'F') subCategories.push({ label: 'Femenina', pos: positions?.female });
+  if (player.is_senior) subCategories.push({ label: 'Sénior', pos: positions?.senior });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -378,12 +378,12 @@ const PlayerProfileDialog = ({ playerId, open, onOpenChange }: PlayerProfileDial
                       <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1">{p.label}</div>
                       <div className="font-display font-extrabold text-xl text-foreground tabular-nums leading-tight">
                         {p.count > 0 ? `${p.value}` : '—'}
-                        {p.count > 0 && <span className="text-[10px] text-muted-foreground font-body font-normal ml-1">cops</span>}
+                        {p.count > 0 && <span className="text-[10px] text-muted-foreground font-body font-normal ml-1">golpes</span>}
                       </div>
                       <div className="text-[10px] text-muted-foreground/70 mt-0.5">
                         {p.count > 0 ? (
-                          <>{p.count} forats · {overPar! >= 0 ? '+' : ''}{overPar!.toFixed(2)} sobre par</>
-                        ) : 'Sense dades'}
+                          <>{p.count} hoyos · {overPar! >= 0 ? '+' : ''}{overPar!.toFixed(2)} sobre par</>
+                        ) : 'Sin datos'}
                       </div>
                     </div>
                   );
@@ -458,7 +458,7 @@ const PlayerProfileDialog = ({ playerId, open, onOpenChange }: PlayerProfileDial
                               Scratch <strong className="ml-1 font-mono">{scratchStableford ?? '—'}</strong>
                             </button>
                           </div>
-                          <span className="text-[10px] text-muted-foreground italic">Clica per alternar</span>
+                          <span className="text-[10px] text-muted-foreground italic">Clica para alternar</span>
                           <span className="text-muted-foreground ml-auto">
                             HCP: <strong className="text-foreground">{r.handicap_at_round ?? '—'}</strong>{handicapPlay != null ? ` (HPU: ${handicapPlay})` : ''}
                           </span>

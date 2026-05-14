@@ -199,8 +199,8 @@ const Rankings = () => {
   }, [results, rounds, bestN]);
 
   const categories = [
-    { key: 'hcpLow', label: 'HCP Baix (≤15.0)' },
-    { key: 'hcpHigh', label: 'HCP Alt (>15.0)' },
+    { key: 'hcpLow', label: 'HCP Bajo (≤15.0)' },
+    { key: 'hcpHigh', label: 'HCP Alto (>15.0)' },
     { key: 'scratch', label: 'Scratch' },
   ];
 
@@ -294,7 +294,7 @@ const Rankings = () => {
                         className="w-full flex items-center justify-center gap-1.5 py-2 px-3 text-[10px] font-body font-medium tracking-[0.2em] uppercase text-accent border border-accent/30 hover:bg-accent/10 transition-colors"
                       >
                         <User className="h-3 w-3" strokeWidth={1.5} />
-                        Veure perfil del jugador
+                        Ver perfil del jugador
                       </button>
                     </div>
                   )}
@@ -398,7 +398,7 @@ const Rankings = () => {
             {t('rankings.generalClassification')} — {t('common.season')} 2026
           </p>
           <span className="inline-block text-[9px] px-2 py-0.5 border border-accent/30 text-accent/80 font-body font-medium tracking-[0.15em] uppercase">
-            Millors {bestN} jornades
+            Mejores {bestN} jornadas
           </span>
         </div>
 
@@ -406,7 +406,7 @@ const Rankings = () => {
         <div className="flex items-center gap-4 mb-4">
           <div className="h-px flex-1 bg-border/60" />
           <span className="font-body text-[10px] font-medium tracking-[0.3em] uppercase text-muted-foreground">
-            Categories
+            Categorías
           </span>
           <div className="h-px flex-1 bg-border/60" />
         </div>

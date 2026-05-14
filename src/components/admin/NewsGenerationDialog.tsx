@@ -120,7 +120,7 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
           body: { round_id: round.id, language },
         });
         if (error) throw error;
-        if (!data?.success) throw new Error(data?.error || 'Error generant el post');
+        if (!data?.success) throw new Error(data?.error || 'Error generando el post');
         return { type: 'instagram' as const, post: data.post as string };
       }
       if (tone === 'whatsapp') {
@@ -128,7 +128,7 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
           body: { round_id: round.id, language },
         });
         if (error) throw error;
-        if (!data?.success) throw new Error(data?.error || 'Error generant el missatge');
+        if (!data?.success) throw new Error(data?.error || 'Error generando el mensaje');
         return { type: 'whatsapp' as const, message: data.message as string };
       }
       // Press
@@ -150,7 +150,7 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
         },
       });
       if (error) throw error;
-      if (!data?.success) throw new Error(data?.error || 'Error generant la notícia');
+      if (!data?.success) throw new Error(data?.error || 'Error generando la noticia');
       return { type: 'press' as const, news: data.news as GeneratedNews };
     },
     onSuccess: (result) => {
@@ -167,7 +167,7 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
         setGeneratedInstagram(null);
         setGeneratedWhatsapp(null);
       }
-      toast({ title: 'Contingut generat!' });
+      toast({ title: '¡Contenido generado!' });
     },
     onError: (err: Error) => {
       toast({ title: 'Error', description: err.message, variant: 'destructive' });
@@ -176,7 +176,7 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
 
   const saveMutation = useMutation({
     mutationFn: async (publish: boolean = false) => {
-      if (!generatedNews) throw new Error('No hi ha notícia generada');
+      if (!generatedNews) throw new Error('No hay noticia generada');
 
       // Upload images first
       const imageUrls = await uploadImages();
@@ -221,7 +221,7 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
       queryClient.invalidateQueries({ queryKey: ['news-draft'] });
       queryClient.invalidateQueries({ queryKey: ['admin-news'] });
       queryClient.invalidateQueries({ queryKey: ['public-news'] });
-      toast({ title: published ? 'Notícia publicada' : 'Notícia guardada com a esborrany' });
+      toast({ title: published ? 'Noticia publicada' : 'Noticia guardada como borrador' });
       if (published) onClose();
     },
     onError: (err: Error) => {
@@ -236,19 +236,19 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
     if (!generatedNews) return;
     const text = `${generatedNews.title}\n\n${generatedNews.subtitle}\n\n${generatedNews.body}`;
     navigator.clipboard.writeText(text);
-    toast({ title: 'Copiat al portapapers!' });
+    toast({ title: '¡Copiado al portapapeles!' });
   };
 
   const copyInstagram = () => {
     if (!generatedInstagram) return;
     navigator.clipboard.writeText(generatedInstagram);
-    toast({ title: 'Post d\'Instagram copiat!' });
+    toast({ title: '¡Post de Instagram copiado!' });
   };
 
   const copyWhatsapp = () => {
     if (!generatedWhatsapp) return;
     navigator.clipboard.writeText(generatedWhatsapp);
-    toast({ title: 'Missatge de WhatsApp copiat!' });
+    toast({ title: '¡Mensaje de WhatsApp copiado!' });
   };
 
   return (
@@ -256,10 +256,10 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-display">
-            Generar notícia — {round.name}
+            Generar noticia — {round.name}
           </DialogTitle>
           <DialogDescription>
-            Configura les opcions i genera la notícia automàticament amb IA.
+            Configura las opciones y genera la noticia automáticamente con IA.
           </DialogDescription>
         </DialogHeader>
 
@@ -269,16 +269,16 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
               <div className="flex items-center gap-3">
                 <Switch checked={confirmSponsor} onCheckedChange={setConfirmSponsor} />
                 <Label>
-                  Mencionar patrocinador: <strong>{round.sponsor || '(cap)'}</strong>
+                  Mencionar patrocinador: <strong>{round.sponsor || '(ninguno)'}</strong>
                 </Label>
               </div>
 
               <div className="space-y-2">
-                <Label>Menció especial (opcional)</Label>
+                <Label>Mención especial (opcional)</Label>
                 <Input
                   value={specialMention}
                   onChange={(e) => setSpecialMention(e.target.value)}
-                  placeholder="p. ex. homenatge a un jugador, agraïment especial..."
+                  placeholder="p. ej. homenaje a un jugador, agradecimiento especial..."
                 />
               </div>
 
@@ -301,66 +301,66 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
                 return (
                   <div className="space-y-3 border border-border/50 rounded-md p-3 bg-muted/20">
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                      Condicions meteorològiques (opcional)
+                      Condiciones meteorológicas (opcional)
                     </p>
                     {anyDay ? (
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         {showFri && (
                           <div className="space-y-1">
-                            <Label className="text-xs">Divendres</Label>
+                            <Label className="text-xs">Viernes</Label>
                             <Input
                               value={weatherFri}
                               onChange={(e) => setWeatherFri(e.target.value)}
-                              placeholder="p. ex. sol, 22°C"
+                              placeholder="p. ej. sol, 22°C"
                             />
                           </div>
                         )}
                         {showSat && (
                           <div className="space-y-1">
-                            <Label className="text-xs">Dissabte</Label>
+                            <Label className="text-xs">Sábado</Label>
                             <Input
                               value={weatherSat}
                               onChange={(e) => setWeatherSat(e.target.value)}
-                              placeholder="p. ex. núvol, pluja fluixa"
+                              placeholder="p. ej. nublado, lluvia ligera"
                             />
                           </div>
                         )}
                         {showSun && (
                           <div className="space-y-1">
-                            <Label className="text-xs">Diumenge</Label>
+                            <Label className="text-xs">Domingo</Label>
                             <Input
                               value={weatherSun}
                               onChange={(e) => setWeatherSun(e.target.value)}
-                              placeholder="p. ex. sol i calor"
+                              placeholder="p. ej. sol y calor"
                             />
                           </div>
                         )}
                       </div>
                     ) : (
                       <div className="space-y-1">
-                        <Label className="text-xs">Temps</Label>
+                        <Label className="text-xs">Tiempo</Label>
                         <Input
                           value={weatherSat}
                           onChange={(e) => setWeatherSat(e.target.value)}
-                          placeholder="p. ex. sol, 22°C"
+                          placeholder="p. ej. sol, 22°C"
                         />
                       </div>
                     )}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       <div className="space-y-1">
-                        <Label className="text-xs">Velocitat dels greens</Label>
+                        <Label className="text-xs">Velocidad de los greens</Label>
                         <Input
                           value={greenSpeed}
                           onChange={(e) => setGreenSpeed(e.target.value)}
-                          placeholder="p. ex. ràpids (11 stimp), mitjans..."
+                          placeholder="p. ej. rápidos (11 stimp), medios..."
                         />
                       </div>
                       <div className="space-y-1">
-                        <Label className="text-xs">Vent</Label>
+                        <Label className="text-xs">Viento</Label>
                         <Input
                           value={windConditions}
                           onChange={(e) => setWindConditions(e.target.value)}
-                          placeholder="p. ex. fort de tramuntana, suau..."
+                          placeholder="p. ej. fuerte de tramontana, suave..."
                         />
                       </div>
                     </div>
@@ -369,17 +369,13 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
               })()}
 
               <div className="space-y-2">
-                <Label>Idioma</Label>
-                <div className="flex gap-2">
-                  <Button type="button" variant={language === 'ca' ? 'default' : 'outline'} size="sm" onClick={() => setLanguage('ca')}>Català</Button>
-                  <Button type="button" variant={language === 'es' ? 'default' : 'outline'} size="sm" onClick={() => setLanguage('es')}>Castellà</Button>
-                </div>
+                <input type="hidden" value="es" />
               </div>
 
               <div className="space-y-2">
-                <Label>To</Label>
+                <Label>Tono</Label>
                 <div className="flex gap-2 flex-wrap">
-                  <Button type="button" variant={tone === 'press' ? 'default' : 'outline'} size="sm" onClick={() => setTone('press')}>Nota de premsa</Button>
+                  <Button type="button" variant={tone === 'press' ? 'default' : 'outline'} size="sm" onClick={() => setTone('press')}>Nota de prensa</Button>
                   <Button type="button" variant={tone === 'whatsapp' ? 'default' : 'outline'} size="sm" onClick={() => setTone('whatsapp')}>
                     <MessageCircle className="h-4 w-4 mr-1" />
                     WhatsApp
@@ -393,12 +389,12 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
 
               {/* Image upload section */}
               <div className="space-y-2">
-                <Label>Imatges (opcional, màx. {MAX_IMAGES})</Label>
+                <Label>Imágenes (opcional, máx. {MAX_IMAGES})</Label>
                 <p className="text-xs text-muted-foreground">
-                  Puja fotos de la jornada per acompanyar la notícia.
+                  Sube fotos de la jornada para acompañar la noticia.
                 </p>
                 <p className="text-[11px] text-muted-foreground/80 italic">
-                  Consell: afegeix una foto <strong>horitzontal</strong> per fer-la servir com a capçalera (no es retallarà). Les <strong>verticals</strong> apareixeran a sota a la galeria. Si no n'hi ha cap d'horitzontal, la notícia no tindrà capçalera.
+                  Consejo: añade una foto <strong>horizontal</strong> para usarla como cabecera (no se recortará). Las <strong>verticales</strong> aparecerán debajo en la galería. Si no hay ninguna horizontal, la noticia no tendrá cabecera.
                 </p>
                 <input
                   ref={fileInputRef}
@@ -432,7 +428,7 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
                     onClick={() => fileInputRef.current?.click()}
                   >
                     <ImagePlus className="h-4 w-4 mr-1" />
-                    {imageFiles.length === 0 ? 'Afegir imatges' : `Afegir més (${imageFiles.length}/${MAX_IMAGES})`}
+                    {imageFiles.length === 0 ? 'Añadir imágenes' : `Añadir más (${imageFiles.length}/${MAX_IMAGES})`}
                   </Button>
                 )}
               </div>
@@ -440,7 +436,7 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
 
             {existingDraft && (
               <Badge variant="outline" className="text-xs">
-                Ja existeix un esborrany en {language === 'ca' ? 'català' : 'castellà'} — es sobreescriurà
+                Ya existe un borrador en castellano — se sobrescribirá
               </Badge>
             )}
 
@@ -452,12 +448,12 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
               {generateMutation.isPending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  Generant...
+                  Generando...
                 </>
               ) : (
                 <>
                   <Sparkles className="h-4 w-4 mr-2" />
-                  {tone === 'press' ? 'Generar nota de premsa' : tone === 'whatsapp' ? 'Generar missatge WhatsApp' : 'Generar post Instagram'}
+                  {tone === 'press' ? 'Generar nota de prensa' : tone === 'whatsapp' ? 'Generar mensaje WhatsApp' : 'Generar post Instagram'}
                 </>
               )}
             </Button>
@@ -466,7 +462,7 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
           <div className="space-y-4">
             <Tabs defaultValue="preview">
               <TabsList>
-                <TabsTrigger value="preview">Vista prèvia</TabsTrigger>
+                <TabsTrigger value="preview">Vista previa</TabsTrigger>
                 <TabsTrigger value="edit">Editar</TabsTrigger>
               </TabsList>
 
@@ -484,7 +480,7 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
                   <div className="prose prose-sm max-w-none whitespace-pre-wrap">{generatedNews.body}</div>
                   {generatedNews.highlights?.length > 0 && (
                     <div className="pt-2 border-t border-border">
-                      <p className="text-xs font-semibold text-muted-foreground mb-1">Destacats:</p>
+                      <p className="text-xs font-semibold text-muted-foreground mb-1">Destacados:</p>
                       <ul className="text-sm space-y-1">
                         {generatedNews.highlights.map((h, i) => (
                           <li key={i}>• {h}</li>
@@ -500,19 +496,19 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
 
               <TabsContent value="edit" className="space-y-3">
                 <div className="space-y-2">
-                  <Label>Títol</Label>
+                  <Label>Título</Label>
                   <Input value={generatedNews.title} onChange={(e) => setGeneratedNews({ ...generatedNews, title: e.target.value })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Subtítol</Label>
+                  <Label>Subtítulo</Label>
                   <Input value={generatedNews.subtitle} onChange={(e) => setGeneratedNews({ ...generatedNews, subtitle: e.target.value })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Cos</Label>
+                  <Label>Cuerpo</Label>
                   <Textarea value={generatedNews.body} onChange={(e) => setGeneratedNews({ ...generatedNews, body: e.target.value })} rows={12} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Extracte SEO</Label>
+                  <Label>Extracto SEO</Label>
                   <Input value={generatedNews.seo_excerpt} onChange={(e) => setGeneratedNews({ ...generatedNews, seo_excerpt: e.target.value })} />
                 </div>
               </TabsContent>
@@ -532,10 +528,10 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
                 {saveMutation.isPending || uploadingImages ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin mr-1" />
-                    {uploadingImages ? 'Pujant imatges...' : 'Guardant...'}
+                    {uploadingImages ? 'Subiendo imágenes...' : 'Guardando...'}
                   </>
                 ) : (
-                  `Guardar esborrany${imageFiles.length > 0 ? ` (${imageFiles.length} foto${imageFiles.length > 1 ? 's' : ''})` : ''}`
+                  `Guardar borrador${imageFiles.length > 0 ? ` (${imageFiles.length} foto${imageFiles.length > 1 ? 's' : ''})` : ''}`
                 )}
               </Button>
               <Button
@@ -546,10 +542,10 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
                 {saveMutation.isPending ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin mr-1" />
-                    Publicant...
+                    Publicando...
                   </>
                 ) : (
-                  'Publicar ara'
+                  'Publicar ahora'
                 )}
               </Button>
               <Button onClick={() => { setGeneratedNews(null); }} variant="ghost" size="sm">

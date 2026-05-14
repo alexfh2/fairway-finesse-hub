@@ -54,7 +54,7 @@ const AdminPlayers = () => {
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['admin-players'] });
-      toast({ title: 'Jugador actualitzat' });
+      toast({ title: 'Jugador actualizado' });
       setEditingId(null);
       setEdit(null);
     },
@@ -86,34 +86,34 @@ const AdminPlayers = () => {
 
   return (
     <div className="animate-fade-in">
-      <h1 className="font-display text-2xl font-bold mb-6">Jugadors</h1>
+      <h1 className="font-display text-2xl font-bold mb-6">Jugadores</h1>
 
       <Card className="border-border/60">
         <CardContent className="p-0 overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Nom</TableHead>
-                <TableHead>Llicència</TableHead>
+                <TableHead>Nombre</TableHead>
+                <TableHead>Licencia</TableHead>
                 <TableHead>Club</TableHead>
-                <TableHead>Telèfon</TableHead>
-                <TableHead>Últim HCP</TableHead>
-                <TableHead>Gènere</TableHead>
-                <TableHead>Sènior</TableHead>
-                <TableHead className="text-right">Accions</TableHead>
+                <TableHead>Teléfono</TableHead>
+                <TableHead>Último HCP</TableHead>
+                <TableHead>Género</TableHead>
+                <TableHead>Sénior</TableHead>
+                <TableHead className="text-right">Acciones</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading ? (
                 <TableRow>
                   <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                    Carregant...
+                    Cargando...
                   </TableCell>
                 </TableRow>
               ) : !players?.length ? (
                 <TableRow>
                   <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                    No hi ha jugadors registrats
+                    No hay jugadores registrados
                   </TableCell>
                 </TableRow>
               ) : (
@@ -204,7 +204,7 @@ const AdminPlayers = () => {
                             }
                           />
                         ) : player.is_senior ? (
-                          <Badge variant="outline">Sènior</Badge>
+                          <Badge variant="outline">Sénior</Badge>
                         ) : (
                           <span className="text-muted-foreground">—</span>
                         )}
