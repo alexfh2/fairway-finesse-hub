@@ -32,6 +32,7 @@ const Rounds = () => {
   const today = new Date().toISOString().split('T')[0];
 
   const buildIcsContent = (round: any) => {
+    if (!round.date) return '';
     const startDate = round.date.replace(/-/g, '');
     const endRaw = round.end_date || round.date;
     const endNext = new Date(endRaw);
@@ -239,7 +240,9 @@ const Rounds = () => {
                         <div className={`flex items-center gap-4 text-[11px] font-body ${played ? 'text-muted-foreground' : 'text-muted-foreground/40'}`}>
                           <span className="flex items-center gap-1">
                             <Calendar className="h-3 w-3" />
-                            {format(new Date(round.date), 'dd MMM yyyy', { locale })}
+                            {round.date
+                              ? format(new Date(round.date), 'dd MMM yyyy', { locale })
+                              : 'Fecha pendiente'}
                             {round.end_date && round.end_date !== round.date && (
                               <> — {format(new Date(round.end_date), 'dd MMM yyyy', { locale })}</>
                             )}
