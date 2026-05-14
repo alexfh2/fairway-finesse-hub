@@ -172,7 +172,7 @@ const ScorecardVisual: React.FC<ScorecardVisualProps> = ({ scores, par = DEFAULT
     <table className="text-xs w-full border-collapse">
       <thead>
         <tr>
-          <td className={holeLabelClass}>Forat</td>
+          <td className={holeLabelClass}>Hoyo</td>
           {halfScores.map((_, i) => (
               <td key={i} className={holeCellClass}>
                 {startHole + i}
