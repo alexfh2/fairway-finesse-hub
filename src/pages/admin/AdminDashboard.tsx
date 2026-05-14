@@ -106,7 +106,7 @@ const AdminDashboard = () => {
               {stat.extra && (
                 <div className="flex gap-2 mt-2">
                   <Badge variant="secondary" className="text-xs">
-                    {stat.extra.drafts} borrador{stat.extra.drafts !== 1 ? 's' : ''}
+                    {stat.extra.drafts} borrador{stat.extra.drafts !== 1 ? 'es' : ''}
                   </Badge>
                   <Badge variant="default" className="text-xs">
                     {stat.extra.published} publicad{stat.extra.published !== 1 ? 'es' : 'a'}
