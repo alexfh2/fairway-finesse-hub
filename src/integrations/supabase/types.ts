@@ -293,7 +293,7 @@ export type Database = {
           course_handicap_women: Json | null
           course_par: Json | null
           created_at: string
-          date: string
+          date: string | null
           end_date: string | null
           external_links: Json | null
           id: string
@@ -314,7 +314,7 @@ export type Database = {
           course_handicap_women?: Json | null
           course_par?: Json | null
           created_at?: string
-          date: string
+          date?: string | null
           end_date?: string | null
           external_links?: Json | null
           id?: string
@@ -335,7 +335,7 @@ export type Database = {
           course_handicap_women?: Json | null
           course_par?: Json | null
           created_at?: string
-          date?: string
+          date?: string | null
           end_date?: string | null
           external_links?: Json | null
           id?: string
