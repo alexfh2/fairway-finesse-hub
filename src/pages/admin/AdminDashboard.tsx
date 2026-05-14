@@ -68,8 +68,8 @@ const AdminDashboard = () => {
   ];
 
   const performReset = async () => {
-    // Wipe all demo data. Keep seasons, user_roles and admin users intact.
-    const tables = ['results', 'import_logs', 'photos', 'news_drafts', 'rounds', 'players'] as const;
+    // Wipe all demo data. Keep user_roles and admin users intact.
+    const tables = ['results', 'import_logs', 'photos', 'news_drafts', 'rounds', 'players', 'seasons'] as const;
     for (const table of tables) {
       const { error } = await supabase
         .from(table)
@@ -80,7 +80,7 @@ const AdminDashboard = () => {
     await queryClient.invalidateQueries();
     toast({
       title: 'Base de datos reiniciada',
-      description: 'Se han eliminado jornadas, jugadores, resultados, fotos y noticias.',
+      description: 'Se han eliminado temporadas, jornadas, jugadores, resultados, fotos y noticias.',
     });
   };
 
