@@ -499,7 +499,7 @@ const AdminRounds = () => {
                     />
                     {!calendarFile && (
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none bg-background pr-2">
-                        Selecciona un fichero
+                        Selecciona un archivo
                       </span>
                     )}
                   </div>
@@ -818,7 +818,7 @@ const AdminRounds = () => {
                     />
                     {!courseFile && (
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none bg-background pr-2">
-                        Selecciona un fichero
+                        Selecciona un archivo
                       </span>
                     )}
                   </div>
@@ -939,7 +939,7 @@ const AdminRounds = () => {
                     />
                     {!courseFileWomen && (
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none bg-background pr-2">
-                        Selecciona un fichero
+                        Selecciona un archivo
                       </span>
                     )}
                   </div>
