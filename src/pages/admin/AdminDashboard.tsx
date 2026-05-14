@@ -109,7 +109,7 @@ const AdminDashboard = () => {
                     {stat.extra.drafts} borrador{stat.extra.drafts !== 1 ? 'es' : ''}
                   </Badge>
                   <Badge variant="default" className="text-xs">
-                    {stat.extra.published} publicad{stat.extra.published !== 1 ? 'es' : 'a'}
+                    {stat.extra.published} publicad{stat.extra.published !== 1 ? 'as' : 'a'}
                   </Badge>
                 </div>
               )}
