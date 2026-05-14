@@ -115,23 +115,6 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
 
   const generateMutation = useMutation({
     mutationFn: async () => {
-      if (tone === 'instagram') {
-        const { data, error } = await supabase.functions.invoke('generate-instagram', {
-          body: { round_id: round.id, language },
-        });
-        if (error) throw error;
-        if (!data?.success) throw new Error(data?.error || 'Error generando el post');
-        return { type: 'instagram' as const, post: data.post as string };
-      }
-      if (tone === 'whatsapp') {
-        const { data, error } = await supabase.functions.invoke('generate-whatsapp', {
-          body: { round_id: round.id, language },
-        });
-        if (error) throw error;
-        if (!data?.success) throw new Error(data?.error || 'Error generando el mensaje');
-        return { type: 'whatsapp' as const, message: data.message as string };
-      }
-      // Press
       const weather_conditions = {
         friday: weatherFri || null,
         saturday: weatherSat || null,
@@ -139,6 +122,23 @@ const NewsGenerationDialog = ({ round, onClose }: NewsGenerationDialogProps) => 
         green_speed: greenSpeed || null,
         wind: windConditions || null,
       };
+      if (tone === 'instagram') {
+        const { data, error } = await supabase.functions.invoke('generate-instagram', {
+          body: { round_id: round.id, language, weather_conditions },
+        });
+        if (error) throw error;
+        if (!data?.success) throw new Error(data?.error || 'Error generando el post');
+        return { type: 'instagram' as const, post: data.post as string };
+      }
+      if (tone === 'whatsapp') {
+        const { data, error } = await supabase.functions.invoke('generate-whatsapp', {
+          body: { round_id: round.id, language, weather_conditions },
+        });
+        if (error) throw error;
+        if (!data?.success) throw new Error(data?.error || 'Error generando el mensaje');
+        return { type: 'whatsapp' as const, message: data.message as string };
+      }
+      // Press
       const { data, error } = await supabase.functions.invoke('generate-news', {
         body: {
           round_id: round.id,

@@ -33,7 +33,7 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: corsHeaders });
     }
 
-    const { round_id, language } = await req.json();
+    const { round_id, language, weather_conditions } = await req.json();
 
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -108,6 +108,16 @@ ${females.length > 0 ? `CLASIFICACIÓN FEMENINA — Ganadora:\n1. ${females[0].p
 ${seniors.length > 0 ? `CLASIFICACIÓN SENIOR (+65) — Ganador:\n1. ${seniors[0].players?.name} — ${seniors[0].stableford_points} pts (Hcp ${seniors[0].handicap_at_round})` : ""}
 
 Total participantes: ${results.length}
+${(() => {
+  const w = weather_conditions || {};
+  const lines: string[] = [];
+  if (w.friday) lines.push(`  · Viernes: ${w.friday}`);
+  if (w.saturday) lines.push(`  · Sábado: ${w.saturday}`);
+  if (w.sunday) lines.push(`  · Domingo: ${w.sunday}`);
+  if (w.green_speed) lines.push(`  · Velocidad de greens: ${w.green_speed}`);
+  if (w.wind) lines.push(`  · Viento: ${w.wind}`);
+  return lines.length ? `\nCONDICIONES METEOROLÓGICAS Y DEL CAMPO:\n${lines.join('\n')}` : '';
+})()}
 
 INSTRUCCIONES:
 - Escribe SIEMPRE en castellano
@@ -118,6 +128,7 @@ INSTRUCCIONES:
 - Utiliza formato *negritas* de WhatsApp para el título y nombres de categorías
 - Tono formal e informativo, sin emojis excesivos (solo alguno puntual si procede)
 - SIEMPRE puntos Stableford, NUNCA golpes ni scratch
+- Si se han facilitado condiciones meteorológicas o del campo y son relevantes (lluvia, viento fuerte, greens muy rápidos, calor extremo…), intégralas con naturalidad en la introducción. Si son normales, omítelas.
 - Incluye el enlace a las clasificaciones al final: ${publishedUrl}
 - Devuelve SOLO el texto del mensaje, sin JSON ni markdown`;
 
