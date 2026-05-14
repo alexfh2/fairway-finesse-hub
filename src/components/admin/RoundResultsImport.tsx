@@ -424,7 +424,7 @@ const RoundResultsImport = ({ round, onClose }: Props) => {
                   {loading ? 'Leyendo Excel...' : 'Seleccionar archivo Excel'}
                 </Button>
                 <p className="text-[10px] text-muted-foreground px-1">
-                  Selecciona un fichero
+                  Selecciona un archivo
                 </p>
               </div>
             </div>
