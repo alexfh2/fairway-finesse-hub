@@ -234,7 +234,7 @@ const AdminRounds = () => {
       const payload: TablesInsert<'rounds'> = {
         name: form.name,
         round_number: parseInt(form.round_number),
-        date: form.date,
+        date: form.date || null,
         end_date: form.end_date || null,
         club: form.club || null,
         course: form.course || null,
@@ -607,7 +607,9 @@ const AdminRounds = () => {
                       <Badge className={statusColors[round.status]}>
                         {statusLabels[round.status]}
                       </Badge>
-                      <span className="text-xs text-muted-foreground">{round.date}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {round.date || 'Fecha pendiente'}
+                      </span>
                       {round.end_date && round.end_date !== round.date && (
                         <span className="text-xs text-muted-foreground">→ {round.end_date}</span>
                       )}
@@ -773,7 +775,14 @@ const AdminRounds = () => {
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
                 <Label>Fecha inicio</Label>
-                <Input type="date" value={form.date} onChange={(e) => updateField('date', e.target.value)} required />
+                <Input
+                  type="date"
+                  value={form.date}
+                  onChange={(e) => updateField('date', e.target.value)}
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  Déjala en blanco si la fecha aún está pendiente de confirmar.
+                </p>
               </div>
               <div className="space-y-2">
                 <Label>Fecha fin (opcional)</Label>
