@@ -79,6 +79,7 @@ const AdminRounds = () => {
   const [editingRound, setEditingRound] = useState<Round | null>(null);
   const [resultsRound, setResultsRound] = useState<Round | null>(null);
   const [deletingRound, setDeletingRound] = useState<Round | null>(null);
+  const [deletingRoundReauth, setDeletingRoundReauth] = useState<Round | null>(null);
   const [newsRound, setNewsRound] = useState<Round | null>(null);
   const [courseUrl, setCourseUrl] = useState('');
   const [extractingPar, setExtractingPar] = useState(false);
