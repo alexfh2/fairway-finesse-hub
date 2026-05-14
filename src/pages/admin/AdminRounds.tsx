@@ -490,12 +490,19 @@ const AdminRounds = () => {
               <div className="flex gap-2 items-end">
                 <div className="flex-1 space-y-1">
                   <Label className="text-xs">Imagen o PDF del calendario</Label>
-                  <Input
-                    type="file"
-                    accept=".pdf,.jpg,.jpeg,.png,.webp"
-                    onChange={(e) => setCalendarFile(e.target.files?.[0] || null)}
-                    className="text-xs"
-                  />
+                  <div className="relative">
+                    <Input
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png,.webp"
+                      onChange={(e) => setCalendarFile(e.target.files?.[0] || null)}
+                      className="text-xs"
+                    />
+                    {!calendarFile && (
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none bg-background pr-2">
+                        No se ha seleccionado ningún fichero
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <Button onClick={handleImportFromFile} disabled={importLoading || !calendarFile}>
                   <Upload className="h-4 w-4 mr-2" />
