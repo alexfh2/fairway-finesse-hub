@@ -1076,6 +1076,21 @@ const AdminRounds = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <ReauthConfirmDialog
+        open={!!deletingRoundReauth}
+        onOpenChange={(o) => !o && setDeletingRoundReauth(null)}
+        title={`Eliminar ${deletingRoundReauth?.name ?? ''}`}
+        description="Confirma tu usuario y contraseña para eliminar la jornada y todos sus datos."
+        confirmLabel="Eliminar definitivamente"
+        destructive
+        onConfirmed={async () => {
+          if (deletingRoundReauth) {
+            await deleteMutation.mutateAsync(deletingRoundReauth.id);
+            setDeletingRoundReauth(null);
+          }
+        }}
+      />
     </div>
   );
 };
