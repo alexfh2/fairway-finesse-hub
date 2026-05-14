@@ -28,6 +28,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import RoundResultsImport from '@/components/admin/RoundResultsImport';
+import { ReauthConfirmDialog } from '@/components/admin/ReauthConfirmDialog';
 import NewsGenerationDialog from '@/components/admin/NewsGenerationDialog';
 import type { Tables, TablesInsert } from '@/integrations/supabase/types';
 import type { Database } from '@/integrations/supabase/types';
@@ -1054,15 +1055,22 @@ const AdminRounds = () => {
             <AlertDialogTitle>¿Eliminar {deletingRound?.name}?</AlertDialogTitle>
             <AlertDialogDescription>
               Se eliminarán todos los resultados, fotos y datos asociados a esta jornada. Esta acción no se puede deshacer.
+              <br /><br />
+              Por seguridad, deberás confirmar tu usuario y contraseña en el siguiente paso.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => deletingRound && deleteMutation.mutate(deletingRound.id)}
+              onClick={() => {
+                if (deletingRound) {
+                  setDeletingRoundReauth(deletingRound);
+                  setDeletingRound(null);
+                }
+              }}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {deleteMutation.isPending ? 'Eliminando...' : 'Eliminar'}
+              Continuar
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
