@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Editorial Noir — dark atmospheric palette */
+    --background: 220 14% 8%;
+    --foreground: 40 18% 85%;
+
+    --card: 220 12% 11%;
+    --card-foreground: 40 18% 85%;
+
+    --popover: 220 12% 11%;
+    --popover-foreground: 40 18% 85%;
+
+    --primary: 158 32% 14%;
+    --primary-foreground: 40 20% 90%;
+
+    --secondary: 220 10% 14%;
+    --secondary-foreground: 40 15% 80%;
+
+    --muted: 220 10% 14%;
+    --muted-foreground: 40 8% 50%;
+
+    --accent: 40 42% 55%;
+    --accent-foreground: 220 14% 8%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 10% 16%;
+    --input: 220 10% 18%;
+    --ring: 40 42% 55%;
+
+    --radius: 0.25rem;
+
+    --sidebar-background: 220 14% 6%;
+    --sidebar-foreground: 40 18% 85%;
+    --sidebar-primary: 40 42% 55%;
+    --sidebar-primary-foreground: 220 14% 8%;
+    --sidebar-accent: 220 10% 12%;
+    --sidebar-accent-foreground: 40 18% 85%;
+    --sidebar-border: 220 10% 14%;
+    --sidebar-ring: 40 42% 55%;
+
+    --gold: 40 42% 55%;
+    --gold-foreground: 220 14% 8%;
+    --green-deep: 158 32% 14%;
+    --green-light: 158 22% 28%;
+    --cream: 40 20% 90%;
+    --cream-dark: 40 12% 70%;
+  }
+
+  .light {
+    /* Light mode — inverted editorial palette */
+    --background: 40 30% 97%;
+    --foreground: 220 14% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 14% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 14% 12%;
+
+    --primary: 158 32% 22%;
+    --primary-foreground: 40 30% 97%;
+
+    --secondary: 40 20% 92%;
+    --secondary-foreground: 220 14% 18%;
+
+    --muted: 40 18% 93%;
+    --muted-foreground: 220 8% 38%;
+
+    --accent: 40 55% 42%;
+    --accent-foreground: 40 30% 97%;
+
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 12% 85%;
+    --input: 40 12% 88%;
+    --ring: 40 55% 42%;
+
+    --sidebar-background: 40 25% 95%;
+    --sidebar-foreground: 220 14% 12%;
+    --sidebar-primary: 40 55% 42%;
+    --sidebar-primary-foreground: 40 30% 97%;
+    --sidebar-accent: 40 18% 90%;
+    --sidebar-accent-foreground: 220 14% 12%;
+    --sidebar-border: 40 12% 85%;
+    --sidebar-ring: 40 55% 42%;
+
+    --gold: 40 55% 42%;
+    --gold-foreground: 40 30% 97%;
+    --green-deep: 158 32% 22%;
+    --green-light: 158 22% 38%;
+    --cream: 220 14% 12%;
+    --cream-dark: 220 8% 30%;
+  }
+
+  .dark {
+    /* Same as root — the site IS dark by default */
+    --background: 220 14% 8%;
+    --foreground: 40 18% 85%;
+
+    --card: 220 12% 11%;
+    --card-foreground: 40 18% 85%;
+
+    --popover: 220 12% 11%;
+    --popover-foreground: 40 18% 85%;
+
+    --primary: 158 32% 14%;
+    --primary-foreground: 40 20% 90%;
+
+    --secondary: 220 10% 14%;
+    --secondary-foreground: 40 15% 80%;
+
+    --muted: 220 10% 14%;
+    --muted-foreground: 40 8% 50%;
+
+    --accent: 40 42% 55%;
+    --accent-foreground: 220 14% 8%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 10% 16%;
+    --input: 220 10% 18%;
+    --ring: 40 42% 55%;
+
+    --sidebar-background: 220 14% 6%;
+    --sidebar-foreground: 40 18% 85%;
+    --sidebar-primary: 40 42% 55%;
+    --sidebar-primary-foreground: 220 14% 8%;
+    --sidebar-accent: 220 10% 12%;
+    --sidebar-accent-foreground: 40 18% 85%;
+    --sidebar-border: 220 10% 14%;
+    --sidebar-ring: 40 42% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}

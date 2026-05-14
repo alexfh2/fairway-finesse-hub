@@ -1,0 +1,1 @@
+ALTER TABLE public.rounds ADD COLUMN course_handicap_women jsonb;
