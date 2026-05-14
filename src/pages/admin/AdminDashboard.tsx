@@ -104,7 +104,7 @@ const AdminDashboard = () => {
             <CardContent>
               <p className="text-3xl font-display font-bold">{stat.value}</p>
               {stat.extra && (
-                <div className="flex gap-2 mt-2">
+                <div className="flex flex-wrap gap-1.5 mt-2 -ml-0.5">
                   <Badge variant="secondary" className="text-xs">
                     {stat.extra.drafts} borrador{stat.extra.drafts !== 1 ? 'es' : ''}
                   </Badge>
