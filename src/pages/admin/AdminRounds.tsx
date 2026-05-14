@@ -490,19 +490,20 @@ const AdminRounds = () => {
               <div className="flex gap-2 items-end">
                 <div className="flex-1 space-y-1">
                   <Label className="text-xs">Imagen o PDF del calendario</Label>
-                  <div className="relative">
-                    <Input
+                  <label className="flex items-center gap-2 h-10 rounded-md border border-input bg-background px-3 text-xs cursor-pointer hover:bg-muted/40 transition-colors">
+                    <span className="px-2 py-1 rounded border border-border bg-muted text-foreground text-[11px] font-medium">
+                      Examinar
+                    </span>
+                    <span className={calendarFile ? 'text-foreground truncate' : 'text-muted-foreground truncate'}>
+                      {calendarFile?.name || 'Selecciona un archivo'}
+                    </span>
+                    <input
                       type="file"
                       accept=".pdf,.jpg,.jpeg,.png,.webp"
                       onChange={(e) => setCalendarFile(e.target.files?.[0] || null)}
-                      className="text-xs"
+                      className="hidden"
                     />
-                    {!calendarFile && (
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none bg-background pr-2">
-                        Selecciona un archivo
-                      </span>
-                    )}
-                  </div>
+                  </label>
                 </div>
                 <Button onClick={handleImportFromFile} disabled={importLoading || !calendarFile}>
                   <Upload className="h-4 w-4 mr-2" />
@@ -809,19 +810,20 @@ const AdminRounds = () => {
               <div className="flex gap-2 items-end">
                 <div className="flex-1 space-y-1">
                   <Label className="text-xs">Foto o PDF de la tarjeta</Label>
-                  <div className="relative">
-                    <Input
+                  <label className="flex items-center gap-2 h-10 rounded-md border border-input bg-background px-3 text-xs cursor-pointer hover:bg-muted/40 transition-colors">
+                    <span className="px-2 py-1 rounded border border-border bg-muted text-foreground text-[11px] font-medium">
+                      Examinar
+                    </span>
+                    <span className={courseFile ? 'text-foreground truncate' : 'text-muted-foreground truncate'}>
+                      {courseFile?.name || 'Selecciona un archivo'}
+                    </span>
+                    <input
                       type="file"
                       accept=".pdf,.jpg,.jpeg,.png,.webp"
                       onChange={(e) => setCourseFile(e.target.files?.[0] || null)}
-                      className="text-xs"
+                      className="hidden"
                     />
-                    {!courseFile && (
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none bg-background pr-2">
-                        Selecciona un archivo
-                      </span>
-                    )}
-                  </div>
+                  </label>
                 </div>
                 <Button type="button" variant="outline" size="sm" onClick={() => handleExtract('file')} disabled={extractingPar || !courseFile}>
                   {extractingPar ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Upload className="h-4 w-4 mr-1" />}
@@ -930,19 +932,20 @@ const AdminRounds = () => {
                   <div className="flex gap-2 items-end">
                     <div className="flex-1 space-y-1">
                       <Label className="text-xs">Foto o PDF de la tarjeta (handicap mujeres)</Label>
-                  <div className="relative">
-                    <Input
-                      type="file"
-                      accept=".pdf,.jpg,.jpeg,.png,.webp"
-                      onChange={(e) => setCourseFileWomen(e.target.files?.[0] || null)}
-                      className="text-xs"
-                    />
-                    {!courseFileWomen && (
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground pointer-events-none bg-background pr-2">
-                        Selecciona un archivo
-                      </span>
-                    )}
-                  </div>
+                      <label className="flex items-center gap-2 h-10 rounded-md border border-input bg-background px-3 text-xs cursor-pointer hover:bg-muted/40 transition-colors">
+                        <span className="px-2 py-1 rounded border border-border bg-muted text-foreground text-[11px] font-medium">
+                          Examinar
+                        </span>
+                        <span className={courseFileWomen ? 'text-foreground truncate' : 'text-muted-foreground truncate'}>
+                          {courseFileWomen?.name || 'Selecciona un archivo'}
+                        </span>
+                        <input
+                          type="file"
+                          accept=".pdf,.jpg,.jpeg,.png,.webp"
+                          onChange={(e) => setCourseFileWomen(e.target.files?.[0] || null)}
+                          className="hidden"
+                        />
+                      </label>
                     </div>
                     <Button type="button" variant="outline" size="sm" onClick={() => handleExtractWomen('file')} disabled={extractingWomen || !courseFileWomen}>
                       {extractingWomen ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Upload className="h-4 w-4 mr-1" />}
