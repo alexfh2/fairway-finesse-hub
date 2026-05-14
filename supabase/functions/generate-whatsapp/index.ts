@@ -60,10 +60,10 @@ serve(async (req) => {
 
     // Categorize results
     const hcpLow = results
-      .filter((r: any) => r.category === "hcp_low" || (r.handicap_at_round !== null && r.handicap_at_round <= 14.4))
+      .filter((r: any) => r.handicap_at_round !== null && r.handicap_at_round <= 14.4)
       .sort((a: any, b: any) => (b.stableford_points ?? 0) - (a.stableford_points ?? 0));
     const hcpHigh = results
-      .filter((r: any) => r.category === "hcp_high" || (r.handicap_at_round !== null && r.handicap_at_round > 14.4))
+      .filter((r: any) => r.handicap_at_round !== null && r.handicap_at_round > 14.4)
       .sort((a: any, b: any) => (b.stableford_points ?? 0) - (a.stableford_points ?? 0));
     const females = results
       .filter((r: any) => r.is_female_prize || r.players?.gender === 'F')
