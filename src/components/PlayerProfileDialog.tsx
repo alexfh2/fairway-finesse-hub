@@ -202,7 +202,7 @@ const PlayerProfileDialog = ({ playerId, open, onOpenChange }: PlayerProfileDial
   // Categoría fijada por el HCP de la primera ronda jugada (consistente con Rankings).
   const hcp = positions?.categoryHcp ?? player.current_handicap;
   const mainCategory =
-    hcp != null && hcp <= 14.4.0
+    hcp != null && hcp <= 14.4
       ? { key: 'hcpLow', label: 'HCP Bajo (≤14.4)', pos: positions?.hcpLow }
       : hcp != null
       ? { key: 'hcpHigh', label: 'HCP Alto (≥14.5)', pos: positions?.hcpHigh }

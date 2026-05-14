@@ -98,11 +98,11 @@ const Rounds = () => {
     if (!results) return {};
     const hcpLow = results.filter(r => {
       const hcp = categoryHcpMap.get(r.player_id) ?? r.handicap_at_round ?? ((r as any).players_public)?.current_handicap;
-      return hcp != null && hcp <= 14.4.0;
+      return hcp != null && hcp <= 14.4;
     }).sort((a, b) => (b.stableford_points ?? 0) - (a.stableford_points ?? 0));
     const hcpHigh = results.filter(r => {
       const hcp = categoryHcpMap.get(r.player_id) ?? r.handicap_at_round ?? ((r as any).players_public)?.current_handicap;
-      return hcp != null && hcp > 14.4.0;
+      return hcp != null && hcp > 14.4;
     }).sort((a, b) => (b.stableford_points ?? 0) - (a.stableford_points ?? 0));
     const female = results.filter(r => ((r as any).players_public)?.gender === 'F')
       .sort((a, b) => (b.stableford_points ?? 0) - (a.stableford_points ?? 0));
