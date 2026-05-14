@@ -62,7 +62,7 @@ const AdminSeasons = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-seasons'] });
-      toast({ title: editingSeason ? 'Temporada actualitzada' : 'Temporada creada' });
+      toast({ title: editingSeason ? 'Temporada actualizada' : 'Temporada creada' });
       closeDialog();
     },
     onError: (err: Error) => {
@@ -92,18 +92,18 @@ const AdminSeasons = () => {
   return (
     <div className="animate-fade-in">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-2xl font-bold">Temporades</h1>
+        <h1 className="font-display text-2xl font-bold">Temporadas</h1>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={openCreate}>
               <Plus className="h-4 w-4 mr-2" />
-              Nova temporada
+              Nueva temporada
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle className="font-display">
-                {editingSeason ? 'Editar temporada' : 'Nova temporada'}
+                {editingSeason ? 'Editar temporada' : 'Nueva temporada'}
               </DialogTitle>
             </DialogHeader>
             <form
@@ -114,7 +114,7 @@ const AdminSeasons = () => {
               className="space-y-4"
             >
               <div className="space-y-2">
-                <Label htmlFor="year">Any</Label>
+                <Label htmlFor="year">Año</Label>
                 <Input
                   id="year"
                   type="number"
@@ -131,11 +131,11 @@ const AdminSeasons = () => {
               </div>
               {!editingSeason && seasons && seasons.length > 0 && (
                 <p className="text-xs text-muted-foreground">
-                  Les regles s'heretaran de la temporada {seasons[0].year}.
+                  Las reglas se heredarán de la temporada {seasons[0].year}.
                 </p>
               )}
               <Button type="submit" className="w-full" disabled={saveMutation.isPending}>
-                {saveMutation.isPending ? 'Guardant...' : 'Guardar'}
+                {saveMutation.isPending ? 'Guardando...' : 'Guardar'}
               </Button>
             </form>
           </DialogContent>
@@ -143,11 +143,11 @@ const AdminSeasons = () => {
       </div>
 
       {isLoading ? (
-        <p className="text-muted-foreground">Carregant...</p>
+        <p className="text-muted-foreground">Cargando...</p>
       ) : !seasons?.length ? (
         <Card className="border-border/60">
           <CardContent className="p-8 text-center text-muted-foreground">
-            No hi ha temporades. Crea la primera!
+            No hay temporadas. ¡Crea la primera!
           </CardContent>
         </Card>
       ) : (

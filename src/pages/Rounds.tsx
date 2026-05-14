@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, MapPin, Users, ChevronDown, BarChart3, CalendarPlus, CalendarDays } from 'lucide-react';
 import { format } from 'date-fns';
-import { ca, es } from 'date-fns/locale';
+import { es } from 'date-fns/locale';
 import { fetchPublicCircuitData, publicCircuitDataQueryKey } from '@/lib/publicCircuitData';
 import { buildPlayerCategoryHandicapMap } from '@/lib/playerCategoryHandicap';
 import { computeScratchStableford } from '@/lib/scratchStableford';
@@ -13,7 +13,7 @@ import PlayerProfileDialog from '@/components/PlayerProfileDialog';
 
 const Rounds = () => {
   const { t, i18n } = useTranslation();
-  const locale = i18n.language === 'ca' ? ca : es;
+  const locale = es;
   const [expandedRound, setExpandedRound] = useState<string | null>(null);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [activeResultTab, setActiveResultTab] = useState('hcpLow');
@@ -119,8 +119,8 @@ const Rounds = () => {
   const categorized = categorizeResults(roundResults);
 
   const roundCategories = [
-    { key: 'hcpLow', label: 'HCP Baix (≤15)' },
-    { key: 'hcpHigh', label: 'HCP Alt (>15)' },
+    { key: 'hcpLow', label: 'HCP Bajo (≤15)' },
+    { key: 'hcpHigh', label: 'HCP Alto (>15)' },
     { key: 'female', label: t('categories.female') },
     { key: 'senior', label: t('categories.senior') },
     { key: 'scratch', label: 'Scratch' },
@@ -193,7 +193,7 @@ const Rounds = () => {
             className="flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-body font-medium tracking-[0.1em] uppercase border border-border/50 bg-card/30 text-muted-foreground hover:border-accent/20 hover:text-foreground transition-all"
           >
             <CalendarPlus className="h-3.5 w-3.5" />
-            Afegir totes
+            Añadir todas
           </button>
         </div>
         <p className="text-[11px] font-body text-muted-foreground tracking-wide mb-6">
@@ -230,7 +230,7 @@ const Rounds = () => {
                           {played ? (
                             <span className="text-[9px] px-2 py-0.5 border border-accent/20 text-accent/60 font-body font-medium tracking-[0.1em] uppercase">Jugada</span>
                           ) : (
-                            <span className="text-[9px] px-2 py-0.5 border border-border/40 text-muted-foreground/40 font-body font-medium tracking-[0.1em] uppercase">Pendent</span>
+                            <span className="text-[9px] px-2 py-0.5 border border-border/40 text-muted-foreground/40 font-body font-medium tracking-[0.1em] uppercase">Pendiente</span>
                           )}
                           {round.sponsor && (
                             <span className={`text-[11px] font-body ${played ? 'text-muted-foreground/60' : 'text-muted-foreground/30'}`}>· {round.sponsor}</span>
@@ -254,11 +254,11 @@ const Rounds = () => {
                         {hasResults && (
                           <span className="text-[10px] text-accent/70 font-body font-medium flex items-center gap-1 tracking-wide uppercase">
                             <BarChart3 className="h-3 w-3" />
-                            Veure resultats
+                            Ver resultados
                           </span>
                         )}
                         {!hasResults && played && (
-                          <span className="text-[10px] text-muted-foreground/50 font-body italic">Pendent de resultats</span>
+                          <span className="text-[10px] text-muted-foreground/50 font-body italic">Pendiente de resultados</span>
                         )}
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
@@ -269,7 +269,7 @@ const Rounds = () => {
                               downloadIcs(buildIcsContent(round), `${round.name.replace(/\s+/g, '-').toLowerCase()}.ics`);
                             }}
                             className="p-1.5 hover:bg-muted/30 transition-colors"
-                            title="Afegir al calendari"
+                            title="Añadir al calendario"
                           >
                             <CalendarPlus className="h-4 w-4 text-muted-foreground/50 hover:text-accent transition-colors" />
                           </button>
@@ -285,7 +285,7 @@ const Rounds = () => {
                     <div className="border-t border-border/30 px-5 py-4">
                       <div className="flex items-center gap-2 mb-3 text-[11px] font-body text-muted-foreground tracking-wide">
                         <Users className="h-3.5 w-3.5" />
-                        <span>{roundResults?.length || 0} participants</span>
+                        <span>{roundResults?.length || 0} participantes</span>
                       </div>
 
                       {roundResults && roundResults.length > 0 ? (

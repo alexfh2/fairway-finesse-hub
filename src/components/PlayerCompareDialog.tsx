@@ -129,12 +129,12 @@ const PlayerCompareDialog: React.FC<PlayerCompareProps> = ({ currentPlayerId, cu
   const rows: { label: string; a: string; b: string; betterIs: 'lower' | 'higher'; aVal: number | null; bVal: number | null }[] = [];
   if (statsA && statsB) {
     rows.push(
-      { label: 'Últim Handicap', a: statsA.handicap != null ? `Hdcp ${statsA.handicap}` : '—', b: statsB.handicap != null ? `Hdcp ${statsB.handicap}` : '—', betterIs: 'lower', aVal: statsA.handicap, bVal: statsB.handicap },
-      { label: 'Mitjana Stableford', a: statsA.avgStableford != null ? `${statsA.avgStableford} pts` : '—', b: statsB.avgStableford != null ? `${statsB.avgStableford} pts` : '—', betterIs: 'higher', aVal: statsA.avgStableford, bVal: statsB.avgStableford },
-      { label: 'Millor resultat', a: statsA.bestStableford != null ? `${statsA.bestStableford} pts` : '—', b: statsB.bestStableford != null ? `${statsB.bestStableford} pts` : '—', betterIs: 'higher', aVal: statsA.bestStableford, bVal: statsB.bestStableford },
-      { label: 'Regularitat (σ)', a: statsA.stdDev != null ? `${statsA.stdDev}` : '—', b: statsB.stdDev != null ? `${statsB.stdDev}` : '—', betterIs: 'lower', aVal: statsA.stdDev, bVal: statsB.stdDev },
+      { label: 'Último Handicap', a: statsA.handicap != null ? `Hdcp ${statsA.handicap}` : '—', b: statsB.handicap != null ? `Hdcp ${statsB.handicap}` : '—', betterIs: 'lower', aVal: statsA.handicap, bVal: statsB.handicap },
+      { label: 'Media Stableford', a: statsA.avgStableford != null ? `${statsA.avgStableford} pts` : '—', b: statsB.avgStableford != null ? `${statsB.avgStableford} pts` : '—', betterIs: 'higher', aVal: statsA.avgStableford, bVal: statsB.avgStableford },
+      { label: 'Mejor resultado', a: statsA.bestStableford != null ? `${statsA.bestStableford} pts` : '—', b: statsB.bestStableford != null ? `${statsB.bestStableford} pts` : '—', betterIs: 'higher', aVal: statsA.bestStableford, bVal: statsB.bestStableford },
+      { label: 'Regularidad (σ)', a: statsA.stdDev != null ? `${statsA.stdDev}` : '—', b: statsB.stdDev != null ? `${statsB.stdDev}` : '—', betterIs: 'lower', aVal: statsA.stdDev, bVal: statsB.stdDev },
       { label: 'Birdies/ronda', a: statsA.birdiesPerRound != null ? `${statsA.birdiesPerRound}` : '—', b: statsB.birdiesPerRound != null ? `${statsB.birdiesPerRound}` : '—', betterIs: 'higher', aVal: statsA.birdiesPerRound, bVal: statsB.birdiesPerRound },
-      { label: 'Jornades', a: `${statsA.roundsPlayed}`, b: `${statsB.roundsPlayed}`, betterIs: 'higher', aVal: statsA.roundsPlayed, bVal: statsB.roundsPlayed },
+      { label: 'Jornadas', a: `${statsA.roundsPlayed}`, b: `${statsB.roundsPlayed}`, betterIs: 'higher', aVal: statsA.roundsPlayed, bVal: statsB.roundsPlayed },
     );
   }
 
@@ -183,7 +183,7 @@ const PlayerCompareDialog: React.FC<PlayerCompareProps> = ({ currentPlayerId, cu
         <DialogHeader>
           <DialogTitle className="font-semibold tracking-tight flex items-center gap-2 font-display text-xl text-primary-foreground bg-primary p-4 -m-6 mb-4 rounded-t-lg">
             <GitCompare className="h-5 w-5 text-primary-foreground" />
-            Comparador de Jugadors
+            Comparador de Jugadores
           </DialogTitle>
         </DialogHeader>
 
@@ -238,7 +238,7 @@ const PlayerCompareDialog: React.FC<PlayerCompareProps> = ({ currentPlayerId, cu
 
             {/* Trend row */}
             <div className="grid grid-cols-[1fr_1fr_1fr] items-center text-center py-2.5 border-b border-border/20">
-              <span className="text-xs text-muted-foreground text-left pl-2">Tendència</span>
+              <span className="text-xs text-muted-foreground text-left pl-2">Tendencia</span>
               <span>{getTrendIcon(statsA.trend)}</span>
               <span>{getTrendIcon(statsB.trend)}</span>
             </div>
@@ -247,28 +247,28 @@ const PlayerCompareDialog: React.FC<PlayerCompareProps> = ({ currentPlayerId, cu
             {stronger && (
               <div className="mt-4 bg-primary/10 rounded-lg px-4 py-3 text-center border border-primary/15">
                 <span className="text-sm text-foreground">
-                  Jugador més fort actualment: <strong className="text-primary">{stronger}</strong>
+                  Jugador más fuerte actualmente: <strong className="text-primary">{stronger}</strong>
                 </span>
               </div>
             )}
 
             {/* Legend */}
             <div className="mt-4 border border-border/40 rounded-lg px-4 py-3">
-              <p className="text-xs font-semibold text-muted-foreground mb-2">Llegenda de la comparativa</p>
+              <p className="text-xs font-semibold text-muted-foreground mb-2">Leyenda de la comparativa</p>
               <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-[11px] text-muted-foreground">
-                <span><strong>Handicap</strong> — Nivell federat (+ = millor)</span>
-                <span><strong>Mitjana Stb.</strong> — Mitjana de punts per prova</span>
-                <span><strong>Regularitat (σ)</strong> — Desviació estàndard (menor = més regular)</span>
-                <span><strong>Millor resultat</strong> — Puntuació més alta aconseguida</span>
-                <span><strong>Tendència</strong> — <TrendingUp className="h-3 w-3 inline" /> Millora / <TrendingDown className="h-3 w-3 inline" /> Empitjora / <Minus className="h-3 w-3 inline" /> Estable</span>
-                <span><strong className="text-primary">Verd</strong> — Indica el valor superior en cada paràmetre</span>
+                <span><strong>Handicap</strong> — Nivel federado (+ = mejor)</span>
+                <span><strong>Media Stb.</strong> — Media de puntos por prueba</span>
+                <span><strong>Regularidad (σ)</strong> — Desviación estándar (menor = más regular)</span>
+                <span><strong>Mejor resultado</strong> — Puntuación más alta conseguida</span>
+                <span><strong>Tendencia</strong> — <TrendingUp className="h-3 w-3 inline" /> Mejora / <TrendingDown className="h-3 w-3 inline" /> Empeora / <Minus className="h-3 w-3 inline" /> Estable</span>
+                <span><strong className="text-primary">Verde</strong> — Indica el valor superior en cada parámetro</span>
               </div>
             </div>
           </div>
         )}
 
         {!statsB && (
-          <p className="text-sm text-muted-foreground text-center py-8">Selecciona un jugador per comparar</p>
+          <p className="text-sm text-muted-foreground text-center py-8">Selecciona un jugador para comparar</p>
         )}
       </DialogContent>
     </Dialog>

@@ -129,7 +129,7 @@ const News = () => {
                   : photos;
                 const round = article.rounds as any;
                 const dateStr = article.published_at
-                  ? new Date(article.published_at).toLocaleDateString('ca-ES', {
+                  ? new Date(article.published_at).toLocaleDateString('es-ES', {
                       day: 'numeric',
                       month: 'long',
                       year: 'numeric',
@@ -172,7 +172,7 @@ const News = () => {
                             setLightbox({ url: headerPhoto.url, caption: headerPhoto.caption })
                           }
                           className="block w-full mb-4 bg-muted/20 group"
-                          aria-label="Ampliar imatge"
+                          aria-label="Ampliar imagen"
                         >
                           <img
                             src={headerPhoto.url}
@@ -200,7 +200,7 @@ const News = () => {
                                 setLightbox({ url: photo.url, caption: photo.caption })
                               }
                               className="block bg-muted/20 overflow-hidden group"
-                              aria-label="Ampliar imatge"
+                              aria-label="Ampliar imagen"
                             >
                               <img
                                 src={photo.url}

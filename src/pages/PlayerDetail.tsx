@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, TrendingUp, Trophy, Bird, Target, Square, AlertTriangle } from 'lucide-react';
 import { format } from 'date-fns';
-import { ca, es } from 'date-fns/locale';
+import { es } from 'date-fns/locale';
 import ScorecardVisual from '@/components/ScorecardVisual';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import SectionHeader from '@/components/SectionHeader';
@@ -17,7 +17,7 @@ import { fetchPublicCircuitData, publicCircuitDataQueryKey } from '@/lib/publicC
 const PlayerDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { t, i18n } = useTranslation();
-  const locale = i18n.language === 'ca' ? ca : es;
+  const locale = es;
   const [openCards, setOpenCards] = useState<string[]>([]);
 
   const scrollToAndOpen = useCallback((resultId: string) => {
@@ -73,8 +73,8 @@ const PlayerDetail = () => {
             </h1>
             <div className="flex gap-4 mt-2 text-sm text-primary-foreground/80">
               {player.club && <span>{player.club}</span>}
-              {player.license && <span>Llicència: {player.license}</span>}
-              {player.current_handicap != null && <span>Últim HCP participació: {player.current_handicap}</span>}
+              {player.license && <span>Licencia: {player.license}</span>}
+              {player.current_handicap != null && <span>Último HCP participación: {player.current_handicap}</span>}
             </div>
           </div>
           <PlayerCompareDialog currentPlayerId={id!} currentPlayerName={player.name} />
@@ -84,7 +84,7 @@ const PlayerDetail = () => {
       {/* Summary table */}
       <Card className="border-border/60 mb-6">
         <CardHeader className="pb-2 px-0 pt-0">
-          <SectionHeader className="rounded-b-none mb-0">Resum de jornades</SectionHeader>
+          <SectionHeader className="rounded-b-none mb-0">Resumen de jornadas</SectionHeader>
         </CardHeader>
         <CardContent>
           {results && results.length > 0 ? (
@@ -93,8 +93,8 @@ const PlayerDetail = () => {
                 <thead>
                   <tr className="border-b border-border/40 text-muted-foreground">
                     <th className="text-left py-2.5">Jornada</th>
-                    <th className="text-left py-2.5 px-2">Camp</th>
-                    <th className="text-left py-2.5 px-2">Data</th>
+                    <th className="text-left py-2.5 px-2">Campo</th>
+                    <th className="text-left py-2.5 px-2">Fecha</th>
                     <th className="text-right py-2.5 px-2">HCP</th>
                     <th className="text-right py-2.5">Stableford</th>
                   </tr>
@@ -161,8 +161,8 @@ const PlayerDetail = () => {
         const bestStableford = stablefordScores.length > 0 ? Math.max(...stablefordScores) : '—';
 
         const stats = [
-          { label: 'Mitjana Stb.', value: avgStableford, icon: TrendingUp },
-          { label: 'Millor Stb.', value: bestStableford, icon: Trophy },
+          { label: 'Media Stb.', value: avgStableford, icon: TrendingUp },
+          { label: 'Mejor Stb.', value: bestStableford, icon: Trophy },
           { label: 'Birdies/ronda', value: (birdies / n).toFixed(1), icon: Bird },
           { label: 'Pars/ronda', value: (pars / n).toFixed(1), icon: Target },
           { label: 'Bogeys/ronda', value: (bogeys / n).toFixed(1), icon: Square },
@@ -172,7 +172,7 @@ const PlayerDetail = () => {
         return (
            <Card className="border-border/60 mb-6">
             <CardHeader className="pb-2 px-0 pt-0">
-              <SectionHeader className="rounded-b-none mb-0">Estadístiques</SectionHeader>
+              <SectionHeader className="rounded-b-none mb-0">Estadísticas</SectionHeader>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
@@ -216,7 +216,7 @@ const PlayerDetail = () => {
 
                 return (
                   <div className="mt-4 pt-3 border-t border-border/40">
-                    <p className="text-xs font-medium text-muted-foreground mb-2">Evolució HCP</p>
+                    <p className="text-xs font-medium text-muted-foreground mb-2">Evolución HCP</p>
                     <div className="overflow-x-auto">
                       <svg width={chartW} height={chartH + 20} className="text-primary">
                         <polyline
@@ -243,7 +243,7 @@ const PlayerDetail = () => {
                 );
               })()}
               <div className="flex gap-4 mt-4 pt-3 border-t border-border/40 text-xs text-muted-foreground">
-                <span>{n} rondes amb targeta</span>
+                <span>{n} rondas con tarjeta</span>
               </div>
             </CardContent>
           </Card>
@@ -251,7 +251,7 @@ const PlayerDetail = () => {
       })()}
 
       {/* Individual scorecards */}
-      <SectionHeader>Targetes</SectionHeader>
+      <SectionHeader>Tarjetas</SectionHeader>
       <Accordion type="multiple" value={openCards} onValueChange={setOpenCards} className="space-y-3">
         {results?.map(r => {
           const round = r.rounds as any;
@@ -310,7 +310,7 @@ const PlayerDetail = () => {
                     />
                   </div>
                 ) : (
-                  <p className="text-xs text-muted-foreground">Sense targeta hoyo a hoyo</p>
+                  <p className="text-xs text-muted-foreground">Sin tarjeta hoyo a hoyo</p>
                 )}
               </AccordionContent>
             </AccordionItem>

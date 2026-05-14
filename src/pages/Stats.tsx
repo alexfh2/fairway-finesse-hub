@@ -60,7 +60,7 @@ const LeadersCard = ({ categories, data, noDataLabel, onSelectPlayer, isOpen, on
               style={{ background: 'linear-gradient(90deg, hsl(var(--accent) / 0.14) 0%, hsl(var(--accent) / 0.06) 45%, hsl(var(--card) / 0.4) 100%)' }}
             >
               <Crown className="h-4 w-4 text-accent" strokeWidth={1.5} />
-              <span className="font-body text-[11px] font-medium tracking-[0.15em] uppercase text-foreground flex-1">Líders per categoria</span>
+              <span className="font-body text-[11px] font-medium tracking-[0.15em] uppercase text-foreground flex-1">Líderes por categoría</span>
               <ChevronDown className={cn('h-4 w-4 text-muted-foreground/40 transition-transform duration-200', isOpen && 'rotate-180')} />
             </div>
             <div className="px-5 py-4">
@@ -175,8 +175,8 @@ const Stats = () => {
   }, [categoryData]);
 
   const leaderCategories = [
-    { key: 'hcpLow' as const, label: 'HCP Baix' },
-    { key: 'hcpHigh' as const, label: 'HCP Alt' },
+    { key: 'hcpLow' as const, label: 'HCP Bajo' },
+    { key: 'hcpHigh' as const, label: 'HCP Alto' },
   ];
 
   const { stats, leaderboards } = useMemo(() => {
@@ -186,7 +186,7 @@ const Stats = () => {
     const specialShots: LeaderboardEntry[] = [];
 
     for (const r of results) {
-      const name = (r.players_public as any)?.name || 'Desconegut';
+      const name = (r.players_public as any)?.name || 'Desconocido';
       const pid = r.player_id;
       if (!byPlayer.has(pid)) byPlayer.set(pid, { name, stableford: [], birdies: 0, rounds: [] });
       const player = byPlayer.get(pid)!;
@@ -200,9 +200,9 @@ const Stats = () => {
         if (pars[h] > 0 && scores[h] > 0) {
           const diff = scores[h] - pars[h];
           const hcpLabel = hcps[h] > 0 ? ` · HCP ${hcps[h]}` : '';
-          if (scores[h] === 1) specialShots.push({ name, value: 1, detail: `Hole-in-One · Forat ${h + 1} (Par ${pars[h]}${hcpLabel}) · ${roundClub}`, playerId: pid });
-          else if (diff <= -3) specialShots.push({ name, value: 1, detail: `Albatros · Forat ${h + 1} (Par ${pars[h]}${hcpLabel}) · ${roundClub}`, playerId: pid });
-          else if (diff === -2) specialShots.push({ name, value: 1, detail: `Eagle · Forat ${h + 1} (Par ${pars[h]}${hcpLabel}) · ${roundClub}`, playerId: pid });
+          if (scores[h] === 1) specialShots.push({ name, value: 1, detail: `Hole-in-One · Hoyo ${h + 1} (Par ${pars[h]}${hcpLabel}) · ${roundClub}`, playerId: pid });
+          else if (diff <= -3) specialShots.push({ name, value: 1, detail: `Albatros · Hoyo ${h + 1} (Par ${pars[h]}${hcpLabel}) · ${roundClub}`, playerId: pid });
+          else if (diff === -2) specialShots.push({ name, value: 1, detail: `Eagle · Hoyo ${h + 1} (Par ${pars[h]}${hcpLabel}) · ${roundClub}`, playerId: pid });
         }
       }
 
@@ -230,7 +230,7 @@ const Stats = () => {
     for (const [pid, player] of players) {
       if (player.stableford.length >= 3) {
         const avg = player.stableford.reduce((a, b) => a + b, 0) / player.stableford.length;
-        avgList.push({ name: player.name, value: Math.round(avg * 10) / 10, detail: `${player.stableford.length} jornades`, playerId: pid });
+        avgList.push({ name: player.name, value: Math.round(avg * 10) / 10, detail: `${player.stableford.length} jornadas`, playerId: pid });
       }
     }
     avgList.sort((a, b) => b.value - a.value);
@@ -297,7 +297,7 @@ const Stats = () => {
         .filter(c => c.count > 0)
         .map(c => {
           const cAvg = Math.round((c.strokes / c.count) * 100) / 100;
-          return { name: c.name, value: cAvg, detail: `${c.count} forats jugats · ${(cAvg - par >= 0 ? '+' : '')}${(cAvg - par).toFixed(2)} sobre par` };
+          return { name: c.name, value: cAvg, detail: `${c.count} hoyos jugados · ${(cAvg - par >= 0 ? '+' : '')}${(cAvg - par).toFixed(2)} sobre par` };
         })
         .sort((a, b) => b.value - a.value);
       return { avg, total: g.count, perCourse };
@@ -320,7 +320,7 @@ const Stats = () => {
         const hcp = getMostCommonPar(hole.hcpCounts);
         const avgOver = hole.totalOverPar / hole.count;
         const avgStrokes = par + avgOver;
-        holeList.push({ name: `Forat ${holeNum} (${course.displayName})`, avgStrokes: Math.round(avgStrokes * 100) / 100, avgOver, par, hcp: Object.keys(hole.hcpCounts).length > 0 ? hcp : null });
+        holeList.push({ name: `Hoyo ${holeNum} (${course.displayName})`, avgStrokes: Math.round(avgStrokes * 100) / 100, avgOver, par, hcp: Object.keys(hole.hcpCounts).length > 0 ? hcp : null });
       }
     }
 
@@ -345,17 +345,17 @@ const Stats = () => {
 
   const statCards = stats
     ? [
-        { icon: Trophy, label: `${t('stats.bestRound')} (amb hàndicap)`, value: `${stats.bestRound.value} pts`, detail: `${stats.bestRound.name} — ${stats.bestRound.detail}`, unit: 'pts' },
+        { icon: Trophy, label: `${t('stats.bestRound')} (con hándicap)`, value: `${stats.bestRound.value} pts`, detail: `${stats.bestRound.name} — ${stats.bestRound.detail}`, unit: 'pts' },
         { icon: Trophy, label: `${t('stats.bestRound')} (scratch)`, value: `${stats.bestRoundScratch.value} pts`, detail: `${stats.bestRoundScratch.name} — ${stats.bestRoundScratch.detail}`, unit: 'pts' },
         { icon: TrendingUp, label: t('stats.avgStableford'), value: `${stats.bestAvg.value} pts`, detail: stats.bestAvg.name, unit: 'pts' },
-        { icon: Star, label: 'Hole-in-One / Eagles / Albatros', value: stats.specialShots.length > 0 ? `${stats.specialShots.length}` : 'Cap encara', detail: stats.specialShots.length > 0 ? stats.specialShots[0].detail || '' : 'Encara no s\'ha aconseguit cap cop especial', unit: 'special' },
+        { icon: Star, label: 'Hole-in-One / Eagles / Albatros', value: stats.specialShots.length > 0 ? `${stats.specialShots.length}` : 'Aún ninguno', detail: stats.specialShots.length > 0 ? stats.specialShots[0].detail || '' : 'Aún no se ha conseguido ningún golpe especial', unit: 'special' },
         { icon: Bird, label: t('stats.birdies', 'Birdies'), value: `${stats.topBirdie.value}`, detail: stats.topBirdie.name, unit: 'birdies' },
-        { icon: CircleDot, label: t('stats.hardestHole', 'Forat més difícil'), value: `${stats.hardestHole.value}`, detail: `${stats.hardestHole.name} — ${stats.hardestHole.detail || ''}`, unit: 'cops' },
-        { icon: CircleDot, label: t('stats.easiestHole', 'Forat més fàcil'), value: `${stats.easiestHole.value}`, detail: `${stats.easiestHole.name} — ${stats.easiestHole.detail || ''}`, unit: 'cops' },
-        { icon: Mountain, label: t('stats.courseDifficulty', 'Camps per dificultat'), value: `${stats.hardestCourse.value} pts/avg`, detail: `${stats.hardestCourse.name}`, unit: 'pts' },
-        { icon: CircleDot, label: 'Mitjana Pars 3', value: stats.par3Stats.total > 0 ? `${stats.par3Stats.avg} cops` : '—', detail: stats.par3Stats.total > 0 ? `${stats.par3Stats.total} forats jugats · ${(stats.par3Stats.avg - 3 >= 0 ? '+' : '')}${(stats.par3Stats.avg - 3).toFixed(2)} sobre par` : 'Sense dades', unit: 'cops' },
-        { icon: CircleDot, label: 'Mitjana Pars 4', value: stats.par4Stats.total > 0 ? `${stats.par4Stats.avg} cops` : '—', detail: stats.par4Stats.total > 0 ? `${stats.par4Stats.total} forats jugats · ${(stats.par4Stats.avg - 4 >= 0 ? '+' : '')}${(stats.par4Stats.avg - 4).toFixed(2)} sobre par` : 'Sense dades', unit: 'cops' },
-        { icon: CircleDot, label: 'Mitjana Pars 5', value: stats.par5Stats.total > 0 ? `${stats.par5Stats.avg} cops` : '—', detail: stats.par5Stats.total > 0 ? `${stats.par5Stats.total} forats jugats · ${(stats.par5Stats.avg - 5 >= 0 ? '+' : '')}${(stats.par5Stats.avg - 5).toFixed(2)} sobre par` : 'Sense dades', unit: 'cops' },
+        { icon: CircleDot, label: t('stats.hardestHole', 'Hoyo más difícil'), value: `${stats.hardestHole.value}`, detail: `${stats.hardestHole.name} — ${stats.hardestHole.detail || ''}`, unit: 'cops' },
+        { icon: CircleDot, label: t('stats.easiestHole', 'Hoyo más fácil'), value: `${stats.easiestHole.value}`, detail: `${stats.easiestHole.name} — ${stats.easiestHole.detail || ''}`, unit: 'cops' },
+        { icon: Mountain, label: t('stats.courseDifficulty', 'Campos por dificultad'), value: `${stats.hardestCourse.value} pts/avg`, detail: `${stats.hardestCourse.name}`, unit: 'pts' },
+        { icon: CircleDot, label: 'Media Pares 3', value: stats.par3Stats.total > 0 ? `${stats.par3Stats.avg} golpes` : '—', detail: stats.par3Stats.total > 0 ? `${stats.par3Stats.total} hoyos jugados · ${(stats.par3Stats.avg - 3 >= 0 ? '+' : '')}${(stats.par3Stats.avg - 3).toFixed(2)} sobre par` : 'Sin datos', unit: 'golpes' },
+        { icon: CircleDot, label: 'Media Pares 4', value: stats.par4Stats.total > 0 ? `${stats.par4Stats.avg} golpes` : '—', detail: stats.par4Stats.total > 0 ? `${stats.par4Stats.total} hoyos jugados · ${(stats.par4Stats.avg - 4 >= 0 ? '+' : '')}${(stats.par4Stats.avg - 4).toFixed(2)} sobre par` : 'Sin datos', unit: 'golpes' },
+        { icon: CircleDot, label: 'Media Pares 5', value: stats.par5Stats.total > 0 ? `${stats.par5Stats.avg} golpes` : '—', detail: stats.par5Stats.total > 0 ? `${stats.par5Stats.total} hoyos jugados · ${(stats.par5Stats.avg - 5 >= 0 ? '+' : '')}${(stats.par5Stats.avg - 5).toFixed(2)} sobre par` : 'Sin datos', unit: 'golpes' },
       ]
     : [];
 
@@ -423,9 +423,9 @@ const Stats = () => {
                       <CollapsibleContent>
                         <div className="px-5 pb-4">
                           <div className="border-t border-border/30 pt-3 space-y-1.5">
-                            <p className="text-[10px] font-body font-medium text-muted-foreground/70 tracking-[0.2em] uppercase mb-2">{card.unit === 'special' ? 'Registre' : 'Top 10'}</p>
+                            <p className="text-[10px] font-body font-medium text-muted-foreground/70 tracking-[0.2em] uppercase mb-2">{card.unit === 'special' ? 'Registro' : 'Top 10'}</p>
                             {lb.map((entry, i) => {
-                              const isHoleStat = card.unit === 'cops';
+                              const isHoleStat = card.unit === 'golpes';
                               const isSpecial = card.unit === 'special';
                               return (
                                 <div key={`${entry.name}-${i}`} className={cn('text-sm', (isHoleStat || isSpecial) ? 'flex flex-col gap-0.5 py-1.5 border-b border-border/20 last:border-b-0' : 'flex flex-col gap-0.5')}>
