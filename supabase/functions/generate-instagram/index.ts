@@ -86,84 +86,75 @@ serve(async (req) => {
       });
     }
 
-    const langLabel = language === "ca" ? "català" : "castellà";
+    const prompt = `Genera un post de Instagram en castellano para compartir los RESULTADOS de una jornada de golf del Circuito Albatros.
 
-    const prompt = `Genera un post d'Instagram en ${langLabel} per compartir els RESULTATS d'una jornada de golf del circuit Gastronòmic Golf Experience.
+ESTRUCTURA DE REFERENCIA (adáptala para RESULTADOS, no para convocatoria):
+🏌️‍♂️✨ CIRCUITO ALBATROS ✨🏌️‍♀️
+[Emoji + Nombre del torneo/jornada]
+📍 [Campo]
+📅 [Fecha]
 
-ESTRUCTURA DE REFERÈNCIA (adapta-la per a RESULTATS, no per a convocatòria):
-🏌️‍♂️✨ GASTRONÒMIC GOLF EXPERIENCE ✨🏌️‍♀️
-[Emoji + Nom del torneig/jornada]
-📍 [Camp]
-📅 [Data]
+[1-2 frases resumen atractivas sobre cómo fue la jornada]
 
-[1-2 frases resum engrescadores sobre com va anar la jornada]
+🏆 RESULTADOS
 
-🏆 RESULTATS
+🏌️ *Handicap Bajo*
+🥇 [Nombre] — [Puntos] pts
+🥈 [Nombre] — [Puntos] pts
+🥉 [Nombre] — [Puntos] pts
 
-🏌️ *Hàndicap Baix*
-🥇 [Nom] — [Punts] pts
-🥈 [Nom] — [Punts] pts
-🥉 [Nom] — [Punts] pts
+🏌️ *Handicap Alto*
+🥇 [Nombre] — [Puntos] pts
+🥈 [Nombre] — [Puntos] pts
+🥉 [Nombre] — [Puntos] pts
 
-🏌️ *Hàndicap Alt*
-🥇 [Nom] — [Punts] pts
-🥈 [Nom] — [Punts] pts
-🥉 [Nom] — [Punts] pts
+👩 *Clasificación Femenina*
+🥇 [Nombre] — [Puntos] pts
 
-👩 *Classificació Femenina*
-🥇 [Nom] — [Punts] pts
+👴 *Clasificación Senior (+65)*
+🥇 [Nombre] — [Puntos] pts
 
-👴 *Classificació Sènior (+65)*
-🥇 [Nom] — [Punts] pts
+[Si hay actuaciones destacadas como birdies, menciónalas con emojis]
 
-[Si hi ha actuacions destacades com birdies, mencionar-les amb emojis]
+[Frase de cierre atractiva sobre la próxima jornada o el circuito]
 
-[Frase de tancament engrescadora sobre la propera jornada o el circuit]
+#CircuitoAlbatros #Golf
 
-🤝 Sponsors & Ordre de Mèrit
-@omodajaecoo.prunacargo
-@cavesbohigas
-@escampa_hotels
-@santipamiesjoiers
-@tancatdecodorniu
-@garmin_iberia
-@bonareaoficial_cat
-#GastronomicGolf #GolfiGastronomia #CircuitGastronomic
-
-DADES DE LA JORNADA:
+DATOS DE LA JORNADA:
 - Jornada: ${round.name} (J${round.round_number})
 - Temporada: ${season?.year || "N/A"}
 - Club: ${round.club || "N/A"}
-- Camp: ${round.course || "N/A"}
-- Data: ${round.date}
-- Patrocinador: ${round.sponsor || "cap"}
-${round.is_master ? "- JORNADA MASTER (punts x1.25)" : ""}
+- Campo: ${round.course || "N/A"}
+- Fecha: ${round.date}
+- Patrocinador: ${round.sponsor || "ninguno"}
+${round.is_master ? "- JORNADA MASTER (puntos x1.25)" : ""}
 
-CLASSIFICACIÓ HANDICAP BAIX (≤15.0):
+CLASIFICACIÓN HANDICAP BAJO (≤15.0):
 ${hcpLow.slice(0, 3).map((r: any, i: number) => `${i + 1}. ${r.players?.name} — ${r.stableford_points} pts (Hcp ${r.handicap_at_round})`).join("\n")}
 
-CLASSIFICACIÓ HANDICAP ALT (15.1–36.0):
+CLASIFICACIÓN HANDICAP ALTO (15.1–36.0):
 ${hcpHigh.slice(0, 3).map((r: any, i: number) => `${i + 1}. ${r.players?.name} — ${r.stableford_points} pts (Hcp ${r.handicap_at_round})`).join("\n")}
 
-${females.length > 0 ? `CLASSIFICACIÓ FEMENINA — Guanyadora:\n1. ${females[0].players?.name} — ${females[0].stableford_points} pts (Hcp ${females[0].handicap_at_round})` : ""}
-${seniors.length > 0 ? `CLASSIFICACIÓ SÈNIOR (+65) — Guanyador:\n1. ${seniors[0].players?.name} — ${seniors[0].stableford_points} pts (Hcp ${seniors[0].handicap_at_round})` : ""}
-${notablePerformances ? `ACTUACIONS DESTACADES: ${notablePerformances}` : ""}
+${females.length > 0 ? `CLASIFICACIÓN FEMENINA — Ganadora:\n1. ${females[0].players?.name} — ${females[0].stableford_points} pts (Hcp ${females[0].handicap_at_round})` : ""}
+${seniors.length > 0 ? `CLASIFICACIÓN SENIOR (+65) — Ganador:\n1. ${seniors[0].players?.name} — ${seniors[0].stableford_points} pts (Hcp ${seniors[0].handicap_at_round})` : ""}
+${notablePerformances ? `ACTUACIONES DESTACADAS: ${notablePerformances}` : ""}
 
-Total participants: ${results.length}
+Total participantes: ${results.length}
 
-INSTRUCCIONS:
-- Utilitza emojis de manera similar a l'estructura de referència
-- Per a Hàndicap Baix i Alt: inclou els 3 primers classificats (🥇🥈🥉)
-- Per a Femenina i Sènior: menciona NOMÉS el/la guanyador/a (🥇)
-- IMPORTANT: Deixa una línia en blanc entre cada secció/categoria per facilitar la lectura
-- Inclou SEMPRE els sponsors i hashtags al final
-- El to ha de ser celebratori i engrescador
-- Modalitat STABLEFORD, NO mencionIs resultats scratch
-- Si és jornada MASTER, destaca-ho
-- Si hi ha patrocinador, menciona'l
-- Retorna NOMÉS el text del post, sense JSON ni markdown
+INSTRUCCIONES:
+- Escribe SIEMPRE en castellano
+- Utiliza emojis de manera similar a la estructura de referencia
+- Para Handicap Bajo y Alto: incluye los 3 primeros clasificados (🥇🥈🥉)
+- Para Femenina y Senior: menciona SOLO al ganador/a (🥇)
+- IMPORTANTE: Deja una línea en blanco entre cada sección/categoría para facilitar la lectura
+- Incluye SIEMPRE los hashtags al final
+- El tono debe ser celebratorio y atractivo
+- Modalidad STABLEFORD, NO menciones resultados scratch
+- Si es jornada MASTER, destácalo
+- Si hay patrocinador, menciónalo
+- Devuelve SOLO el texto del post, sin JSON ni markdown
 
-Retorna el text complet del post d'Instagram.`;
+Devuelve el texto completo del post de Instagram.`;
 
     const lovableApiKey = Deno.env.get("LOVABLE_API_KEY");
     if (!lovableApiKey) throw new Error("LOVABLE_API_KEY not configured");
@@ -177,7 +168,7 @@ Retorna el text complet del post d'Instagram.`;
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: "Ets un community manager especialitzat en golf i gastronomia. Generes posts d'Instagram atractius i engrescadors amb emojis." },
+          { role: "system", content: "Eres un community manager especializado en golf. Generas posts de Instagram atractivos en castellano con emojis." },
           { role: "user", content: prompt },
         ],
       }),
