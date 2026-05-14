@@ -1,4 +1,3 @@
-import logo from '@/assets/logo.png';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 
@@ -14,10 +13,10 @@ const Footer = () => {
             </div>
             <div>
               <p className="font-display text-xl text-foreground italic">
-                Més que un circuit. Una experiència.
+                Más que un circuito. Una experiencia.
               </p>
               <p className="text-sm text-muted-foreground mt-1">
-                Gastronomia, esport i exclusivitat als millors camps.
+                Circuito Albatros — golf de exclusividad en los mejores campos.
               </p>
             </div>
           </div>
@@ -25,7 +24,7 @@ const Footer = () => {
             to="/jornades"
             className="flex items-center gap-2 px-6 py-3 border border-foreground/20 text-xs font-body font-medium uppercase tracking-[0.2em] text-foreground hover:border-accent hover:text-accent transition-colors"
           >
-            Descobreix el circuit
+            Descubre el circuito
             <ChevronRight className="h-3.5 w-3.5" />
           </Link>
         </div>
@@ -34,12 +33,13 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="container py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
         <img
-          src={logo}
-          alt="Gastronòmic Golf"
-          className="h-7 w-auto opacity-40"
+          src="/logo-albatros.png"
+          alt="Circuito Albatros"
+          className="h-7 w-auto opacity-60"
+          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
         />
         <p className="text-[10px] text-muted-foreground/60 tracking-[0.15em] uppercase">
-          Circuit privat de golf — Classificació oficial
+          Circuito Albatros — Clasificación oficial
         </p>
         <p className="text-[10px] text-muted-foreground/40">
           © {new Date().getFullYear()}

@@ -68,7 +68,7 @@ const AdminRounds = () => {
   const [selectedSeason, setSelectedSeason] = useState<string>('');
 
   // Import state
-  const [importUrl, setImportUrl] = useState('https://gastronomicgolf.com');
+  const [importUrl, setImportUrl] = useState('https://circuitoalbatros.com');
   const [importedRounds, setImportedRounds] = useState<ParsedRound[]>([]);
   const [showImport, setShowImport] = useState(false);
   const [importLoading, setImportLoading] = useState(false);
@@ -480,7 +480,7 @@ const AdminRounds = () => {
                 <Input
                   value={importUrl}
                   onChange={(e) => setImportUrl(e.target.value)}
-                  placeholder="https://gastronomicgolf.com"
+                  placeholder="https://circuitoalbatros.com"
                 />
                 <Button onClick={handleImport} disabled={importLoading}>
                   <Download className="h-4 w-4 mr-2" />

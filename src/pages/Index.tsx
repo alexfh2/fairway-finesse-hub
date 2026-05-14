@@ -96,14 +96,14 @@ const Index = () => {
           <p className="font-body text-[11px] font-medium tracking-[0.35em] uppercase text-accent/80 mb-3">
             {t('common.season')} 2026
           </p>
-          <h1 className="font-brand text-5xl lg:text-7xl font-bold text-foreground leading-[0.95] mb-1 tracking-tight">
-            Gastronòmic <span className="font-extrabold">GOLF</span>
+          <h1 className="font-display text-5xl lg:text-7xl text-foreground leading-[0.95] mb-1 tracking-tight italic">
+            Circuito <span className="text-accent">Albatros</span>
           </h1>
-          <p className="font-brand text-xl lg:text-2xl text-accent/70 font-light tracking-wide mb-3">
-            circuit de golf
+          <p className="font-brand text-xl lg:text-2xl text-accent/80 font-light tracking-wide mb-3">
+            circuito de golf
           </p>
-          <p className="font-body text-sm text-muted-foreground/70 tracking-wide">
-            Classificació i seguiment del circuit
+          <p className="font-body text-sm text-muted-foreground/80 tracking-wide">
+            Clasificación y seguimiento del circuito
           </p>
         </div>
 

@@ -37,14 +37,14 @@ const Rounds = () => {
     const endNext = new Date(endRaw);
     endNext.setDate(endNext.getDate() + 1);
     const endDate = endNext.toISOString().split('T')[0].replace(/-/g, '');
-    const title = `${round.name} — Circuit Gastronòmic Golf`;
+    const title = `${round.name} — Circuito Albatros`;
     const location = [round.club, round.course].filter(Boolean).join(' — ');
     const description = [round.sponsor ? `Patrocinador: ${round.sponsor}` : '', round.is_master ? 'Jornada MASTER (x1.25)' : ''].filter(Boolean).join('\\n');
     return [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Circuit Gastronomic Golf//CA',
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Circuito Albatros//ES',
       'BEGIN:VEVENT', `DTSTART;VALUE=DATE:${startDate}`, `DTEND;VALUE=DATE:${endDate}`,
       `SUMMARY:${title}`, location ? `LOCATION:${location}` : '', description ? `DESCRIPTION:${description}` : '',
-      `UID:${round.id}@gastronomicgolf`, 'END:VEVENT', 'END:VCALENDAR',
+      `UID:${round.id}@circuitoalbatros`, 'END:VEVENT', 'END:VCALENDAR',
     ].filter(Boolean).join('\r\n');
   };
 
@@ -64,17 +64,17 @@ const Rounds = () => {
       const endNext = new Date(endRaw);
       endNext.setDate(endNext.getDate() + 1);
       const endDate = endNext.toISOString().split('T')[0].replace(/-/g, '');
-      const title = `${r.name} — Circuit Gastronòmic Golf`;
+      const title = `${r.name} — Circuito Albatros`;
       const location = [r.club, r.course].filter(Boolean).join(' — ');
       const description = [r.sponsor ? `Patrocinador: ${r.sponsor}` : '', r.is_master ? 'Jornada MASTER (x1.25)' : ''].filter(Boolean).join('\\n');
       return [
         'BEGIN:VEVENT', `DTSTART;VALUE=DATE:${startDate}`, `DTEND;VALUE=DATE:${endDate}`,
         `SUMMARY:${title}`, location ? `LOCATION:${location}` : '', description ? `DESCRIPTION:${description}` : '',
-        `UID:${r.id}@gastronomicgolf`, 'END:VEVENT',
+        `UID:${r.id}@circuitoalbatros`, 'END:VEVENT',
       ].filter(Boolean).join('\r\n');
     }).join('\r\n');
-    const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Circuit Gastronomic Golf//CA\r\n${events}\r\nEND:VCALENDAR`;
-    downloadIcs(ics, 'circuit-gastronomic-golf-2026.ics');
+    const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Circuito Albatros//ES\r\n${events}\r\nEND:VCALENDAR`;
+    downloadIcs(ics, 'circuito-albatros-2026.ics');
   };
 
   const { data: roundData } = useQuery({
