@@ -123,9 +123,9 @@
     "courseDifficulty": "Camps per dificultat",
     "courseDifficultyDesc": "Mitjana Stableford per camp (menor = més exigent)",
     "hardestHole": "Forat més difícil",
-    "hardestHoleDesc": "Mitjana de cops per sobre del par",
+    "hardestHoleDesc": "Mitjana de golpes per sobre del par",
     "easiestHole": "Forat més fàcil",
-    "easiestHoleDesc": "Mitjana de cops respecte al par",
+    "easiestHoleDesc": "Mitjana de golpes respecte al par",
     "participation": "Participació"
   },
   "news": {
