@@ -60,10 +60,10 @@ serve(async (req) => {
 
     // Categorize results
     const hcpLow = results
-      .filter((r: any) => r.category === "hcp_low" || (r.handicap_at_round !== null && r.handicap_at_round <= 15))
+      .filter((r: any) => r.handicap_at_round !== null && r.handicap_at_round <= 14.4)
       .sort((a: any, b: any) => (b.stableford_points ?? 0) - (a.stableford_points ?? 0));
     const hcpHigh = results
-      .filter((r: any) => r.category === "hcp_high" || (r.handicap_at_round !== null && r.handicap_at_round > 15))
+      .filter((r: any) => r.handicap_at_round !== null && r.handicap_at_round > 14.4)
       .sort((a: any, b: any) => (b.stableford_points ?? 0) - (a.stableford_points ?? 0));
     const females = results
       .filter((r: any) => r.is_female_prize || r.players?.gender === 'F')
@@ -129,10 +129,10 @@ DATOS DE LA JORNADA:
 - Patrocinador: ${round.sponsor || "ninguno"}
 ${round.is_master ? "- JORNADA MASTER (puntos x1.25)" : ""}
 
-CLASIFICACIÓN HANDICAP BAJO (≤15.0):
+CLASIFICACIÓN HANDICAP BAJO (≤14.4):
 ${hcpLow.slice(0, 3).map((r: any, i: number) => `${i + 1}. ${r.players?.name} — ${r.stableford_points} pts (Hcp ${r.handicap_at_round})`).join("\n")}
 
-CLASIFICACIÓN HANDICAP ALTO (15.1–36.0):
+CLASIFICACIÓN HANDICAP ALTO (14.5–36.0):
 ${hcpHigh.slice(0, 3).map((r: any, i: number) => `${i + 1}. ${r.players?.name} — ${r.stableford_points} pts (Hcp ${r.handicap_at_round})`).join("\n")}
 
 ${females.length > 0 ? `CLASIFICACIÓN FEMENINA — Ganadora:\n1. ${females[0].players?.name} — ${females[0].stableford_points} pts (Hcp ${females[0].handicap_at_round})` : ""}

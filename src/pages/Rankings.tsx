@@ -136,10 +136,10 @@ const Rankings = () => {
       });
     };
 
-    const hcpLow = buildRanking(p => p.handicap != null && p.handicap <= 15.0);
+    const hcpLow = buildRanking(p => p.handicap != null && p.handicap <= 14.4);
     hcpLow.sort((a, b) => b.total - a.total);
 
-    const hcpHigh = buildRanking(p => p.handicap != null && p.handicap > 15.0);
+    const hcpHigh = buildRanking(p => p.handicap != null && p.handicap > 14.4);
     hcpHigh.sort((a, b) => b.total - a.total);
 
     const female = buildRanking(p => p.gender === 'F');
@@ -199,8 +199,8 @@ const Rankings = () => {
   }, [results, rounds, bestN]);
 
   const categories = [
-    { key: 'hcpLow', label: 'HCP Bajo (≤15.0)' },
-    { key: 'hcpHigh', label: 'HCP Alto (>15.0)' },
+    { key: 'hcpLow', label: 'HCP Bajo (≤14.4)' },
+    { key: 'hcpHigh', label: 'HCP Alto (≥14.5)' },
     { key: 'scratch', label: 'Scratch' },
   ];
 

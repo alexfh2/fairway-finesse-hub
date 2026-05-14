@@ -60,10 +60,10 @@ serve(async (req) => {
 
     // Categorize results
     const hcpLow = results
-      .filter((r: any) => r.category === "hcp_low" || (r.handicap_at_round !== null && r.handicap_at_round <= 15))
+      .filter((r: any) => r.handicap_at_round !== null && r.handicap_at_round <= 14.4)
       .sort((a: any, b: any) => (b.stableford_points ?? 0) - (a.stableford_points ?? 0));
     const hcpHigh = results
-      .filter((r: any) => r.category === "hcp_high" || (r.handicap_at_round !== null && r.handicap_at_round > 15))
+      .filter((r: any) => r.handicap_at_round !== null && r.handicap_at_round > 14.4)
       .sort((a: any, b: any) => (b.stableford_points ?? 0) - (a.stableford_points ?? 0));
     const females = results
       .filter((r: any) => r.is_female_prize || r.players?.gender === 'F')
@@ -88,9 +88,9 @@ El ${round.club || "club"} ha acogido la ${round.name} del Circuito Albatros, di
 ${round.sponsor ? `Jornada patrocinada por ${round.sponsor}.` : ""}
 ${round.is_master ? "⭐ JORNADA MASTER — ¡Puntos x1.25!" : ""}
 
-En la clasificación Handicap Bajo (≤15), [NOMBRE] se ha impuesto con [X] puntos Stableford, seguido de [NOMBRE] ([X]) y [NOMBRE] ([X]).
+En la clasificación Handicap Bajo (≤14.4), [NOMBRE] se ha impuesto con [X] puntos Stableford, seguido de [NOMBRE] ([X]) y [NOMBRE] ([X]).
 
-En la clasificación Handicap Alto (15.1–36), [NOMBRE] se ha impuesto con [X] puntos, seguido de [NOMBRE] ([X]) y [NOMBRE] ([X]).
+En la clasificación Handicap Alto (14.5–36), [NOMBRE] se ha impuesto con [X] puntos, seguido de [NOMBRE] ([X]) y [NOMBRE] ([X]).
 ${females.length > 0 ? `\nEn la clasificación Femenina, [NOMBRE] se ha impuesto con [X] puntos.` : ""}
 ${seniors.length > 0 ? `\nEn la clasificación Senior (+65), [NOMBRE] se ha impuesto con [X] puntos.` : ""}
 
@@ -98,10 +98,10 @@ Las clasificaciones completas y estadísticas detalladas se pueden consultar en:
 ---
 
 DATOS REALES:
-CLASIFICACIÓN HANDICAP BAJO (≤15.0) — ${hcpLow.length} jugadores:
+CLASIFICACIÓN HANDICAP BAJO (≤14.4) — ${hcpLow.length} jugadores:
 ${hcpLow.slice(0, 3).map((r: any, i: number) => `${i + 1}. ${r.players?.name} — ${r.stableford_points} pts (Hcp ${r.handicap_at_round})`).join("\n")}
 
-CLASIFICACIÓN HANDICAP ALTO (15.1–36.0) — ${hcpHigh.length} jugadores:
+CLASIFICACIÓN HANDICAP ALTO (14.5–36.0) — ${hcpHigh.length} jugadores:
 ${hcpHigh.slice(0, 3).map((r: any, i: number) => `${i + 1}. ${r.players?.name} — ${r.stableford_points} pts (Hcp ${r.handicap_at_round})`).join("\n")}
 
 ${females.length > 0 ? `CLASIFICACIÓN FEMENINA — Ganadora:\n1. ${females[0].players?.name} — ${females[0].stableford_points} pts (Hcp ${females[0].handicap_at_round})` : ""}

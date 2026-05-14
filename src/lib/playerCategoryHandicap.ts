@@ -1,7 +1,7 @@
 /**
  * Devuelve el "handicap de categoría" de cada jugador: el handicap_at_round
  * de la PRIMERA ronda jugada cronológicamente. Esta categoría queda fijada
- * para toda la temporada aunque el HCP suba o baje del umbral (15).
+ * para toda la temporada aunque el HCP suba o baje del umbral (14.5).
  *
  * Orden cronológico: play_date → rounds.date → round_number → created_at.
  */
@@ -60,7 +60,7 @@ export function buildPlayerCategoryHandicapMap(
 
 export function categorizeByHandicap(hcp: number | null | undefined): 'hcp_low' | 'hcp_high' | null {
   if (hcp == null) return null;
-  return Number(hcp) <= 15 ? 'hcp_low' : 'hcp_high';
+  return Number(hcp) <= 14.4 ? 'hcp_low' : 'hcp_high';
 }
 
 /**

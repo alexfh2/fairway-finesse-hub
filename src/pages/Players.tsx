@@ -144,8 +144,8 @@ const Players = () => {
   }, [players, statsByPlayer, rankPositions]);
 
   const filterCategories = [
-    { key: 'low', label: 'HCP Bajo (≤15)' },
-    { key: 'high', label: 'HCP Alto (>15)' },
+    { key: 'low', label: 'HCP Bajo (≤14.4)' },
+    { key: 'high', label: 'HCP Alto (≥14.5)' },
     { key: 'female', label: t('categories.female') },
     { key: 'senior', label: t('categories.senior') },
   ];
@@ -163,8 +163,8 @@ const Players = () => {
       if (q && !(p.name.toLowerCase().includes(q) || p.license?.toLowerCase().includes(q) || p.club?.toLowerCase().includes(q))) return false;
       if (activeFilter) {
         const hcp = p.current_handicap;
-        if (activeFilter === 'low' && !(hcp !== null && hcp !== undefined && hcp <= 15)) return false;
-        if (activeFilter === 'high' && !(hcp !== null && hcp !== undefined && hcp > 15)) return false;
+        if (activeFilter === 'low' && !(hcp !== null && hcp !== undefined && hcp <= 14.4)) return false;
+        if (activeFilter === 'high' && !(hcp !== null && hcp !== undefined && hcp > 14.4)) return false;
         if (activeFilter === 'female' && p.gender !== 'F') return false;
         if (activeFilter === 'senior' && !p.is_senior) return false;
       }
